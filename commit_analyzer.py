@@ -1,6 +1,7 @@
 import csv
 import numpy as np
 from scipy.stats import chi2_contingency
+import matplotlib.pyplot as plt
 
 # create empty lists for each time period
 period1 = []
@@ -35,6 +36,25 @@ if p_val < 0.05:
 else:
     print("The null hypothesis cannot be rejected. There is no statistically significant relationship between the time period and the observed frequency.")
 
+# plot the frequencies for each category
+categories = ["Category 1", "Category 2", "Category 3", "Category 4", "Category 5", "Category 6", "Category 7"]
+x = np.arange(len(categories))
+width = 0.2
 
+fig, ax = plt.subplots()
+rects1 = ax.bar(x - 2*width, period1, width, label='Period 1')
+rects2 = ax.bar(x - width, period2, width, label='Period 2')
+rects3 = ax.bar(x, period3, width, label='Period 3')
+rects4 = ax.bar(x + width, period4, width, label='Period 4')
+rects5 = ax.bar(x + 2*width, period5, width, label='Period 5')
+
+# add some labels and titles
+ax.set_ylabel('Frequency')
+ax.set_title('Frequency by Category and Time Period')
+ax.set_xticks(x)
+ax.set_xticklabels(categories)
+ax.legend()
+
+plt.show()
 
 
