@@ -42,11 +42,11 @@ x = np.arange(len(categories))
 width = 0.2
 
 fig, ax = plt.subplots()
-rects1 = ax.bar(x - 2*width, period1, width, label='Period 1')
-rects2 = ax.bar(x - width, period2, width, label='Period 2')
-rects3 = ax.bar(x, period3, width, label='Period 3')
-rects4 = ax.bar(x + width, period4, width, label='Period 4')
-rects5 = ax.bar(x + 2*width, period5, width, label='Period 5')
+rects1 = ax.bar(x - 2*width, period1, width, label='2000-2004')
+rects2 = ax.bar(x - width, period2, width, label='2005-2009')
+rects3 = ax.bar(x, period3, width, label='2010-2014')
+rects4 = ax.bar(x + width, period4, width, label='2015-2019')
+rects5 = ax.bar(x + 2*width, period5, width, label='2020-2023')
 
 # add some labels and titles
 ax.set_ylabel('Frequency')
