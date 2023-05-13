@@ -37,7 +37,7 @@ else:
     print("The null hypothesis cannot be rejected. There is no statistically significant relationship between the time period and the observed frequency.")
 
 # plot the frequencies for each category
-categories = ["Category 1", "Category 2", "Category 3", "Category 4", "Category 5", "Category 6", "Category 7"]
+categories = ["Friday", "Monday", "Saturday", "Sunday", "Thursday", "Tuesday", "Wednesday"]
 x = np.arange(len(categories))
 width = 0.2
 
