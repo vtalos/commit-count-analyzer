@@ -74,10 +74,11 @@ ax2.legend()
 
 x3 = np.arange(len(periods))
 width = 0.16
+offset = width * 1.5
 
 fig3, ax3 = plt.subplots()
-rects13 = ax3.bar(x3 - 2*width, day[5], width, label=days[5])
-rects14 = ax3.bar(x3 - width, day[6], width, label=days[6])
+rects13 = ax3.bar(x3 - 2*width + offset, day[5], width, label=days[5])
+rects14 = ax3.bar(x3 - width + offset, day[6], width, label=days[6])
 
 ax3.set_ylabel('Frequencies')
 ax3.set_xlabel('Periods')
