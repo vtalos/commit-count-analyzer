@@ -14,11 +14,11 @@ with open("CommitCountsDaily.csv") as csvfile:
     reader = csv.reader(csvfile)
     next(reader)  # skip header row
     for row in reader:
-        period2.append(float(row[1]))
-        period3.append(float(row[2]))
-        period4.append(float(row[3]))
-        period5.append(float(row[4]))
-        period1.append(float(row[5]))
+        period1.append(float(row[1]))
+        period2.append(float(row[2]))
+        period3.append(float(row[3]))
+        period4.append(float(row[4]))
+        period5.append(float(row[5]))
 
 
 # plot the frequencies for each category
