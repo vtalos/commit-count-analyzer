@@ -68,4 +68,14 @@ rects12 = ax2.bar(x2 + 4*width, day[6], width, label=days[6])
 ax2.set_ylabel('')
 ax2.set
 
+x3 = np.arange(len(periods))
+width = 0.16
+
+fig3, ax3 = plt.subplots()
+rects13 = ax3.bar(x3 - 2*width, day[5], width, label=days[5])
+rects14 = ax3.bar(x3 - width, day[6], width, label=days[6])
+
+ax3.set_ylabel('')
+ax3.set
+
 plt.show()
