@@ -13,6 +13,8 @@ period5 = []
 with open("CommitCountsDaily.csv") as csvfile:
     reader = csv.reader(csvfile)
     next(reader)  # skip header row
+    sum1, sum2, sum3, sum4, sum5 = 0, 0, 0, 0, 0
+
     for row in reader:
         period1.append(float(row[1]))
         period2.append(float(row[2]))
@@ -21,10 +23,11 @@ with open("CommitCountsDaily.csv") as csvfile:
         period5.append(float(row[5]))
 
 
+
 # plot the frequencies for each category
 categories = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 x = np.arange(len(categories))
-width = 0.2
+width = 0.15
 
 fig, ax = plt.subplots()
 rects1 = ax.bar(x - 2*width, period1, width, label='2000-2004')
