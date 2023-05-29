@@ -3,14 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from itertools import tee
 
-# create empty lists for each time period
-period1 = []
-period2 = []
-period3 = []
-period4 = []
-period5 = []
-
-
 day = [[] for _ in range(7)]
 
 sum_period = []
@@ -20,18 +12,18 @@ with open("CommitCountsDaily.csv") as csvfile:
     reader = csv.reader(csvfile)
     next(reader)  # skip header row
     reader_copy1, reader_copy2 = tee(reader)
-    print(reader)
-    print(reader_copy1)
+    #print(reader)
+    #print(reader_copy1)
     num_of_periods = len(list(reader_copy1)) - 1
-    print(num_of_periods)
+    #print(num_of_periods)
     period = [[] for _ in range(num_of_periods)]
-    print(len(period))
-    print(reader)
+    #print(len(period))
+    #print(reader)
     for row in reader_copy2:
-        print(row)
+        #print(row)
         for i in range(1, len(period)):
             period[i].append(float(row[i]))
-            print(period[i])
+            #print(period[i])
         #period1.append(float(row[1]))
         #period2.append(float(row[2]))
         #period3.append(float(row[3]))
@@ -63,11 +55,13 @@ x1 = np.arange(len(days))
 width = 0.15
 
 fig, ax = plt.subplots()
-dif = -len(period)
-for i in range(1, len(period)):
-    rects.append(ax.bar(x1 + dif*width, period[i], width, label=periods[i-1]))
-    dif += 1
+
 count = len(period)
+for i in range(1, len(period)):
+    x_shift = x1 + (i - count / 2 + 0.5) * width
+    rect = ax.bar(x_shift, period[i], width, label=periods[i-1])
+    rects.append(rect)
+
 '''
 rects1 = ax.bar(x1 - 2*width, period1, width, label=periods[0])
 rects2 = ax.bar(x1 - width, period2, width, label=periods[1])
@@ -88,10 +82,13 @@ x2 = np.arange(len(periods))
 width = 0.1
 
 fig2, ax2 = plt.subplots()
-dif = -len(day)
-for i in range(count, count+len(day)):
-    rects.append(ax2.bar(x2 + dif*width, day[i-count], width, label=days[i-count]))
-    dif += 1
+
+for i in range(len(day)):
+    x_shift = x2 + (i - (len(day) - 1) / 2) * width
+    #x_shift = x2 + (i - 7 / 2 + 0.5) * width
+    rect = ax2.bar(x_shift, day[i], width, label=days[i])
+    rects.append(rect)
+
 
 '''
 rects6 = ax2.bar(x2 - 2*width, day[0], width, label=days[0])
@@ -117,10 +114,11 @@ offset = width * 1.5
 
 fig3, ax3 = plt.subplots()
 
-dif = 1
-for i in range(count, count+2):
-    rects.append(ax2.bar(x2 + dif*width, day[i-count], width, label=days[i-count]))
-    dif += 1
+for i in range(2):
+    x_shift = x2 + (i - 1 / 2) * width
+    #x_shift = x2 + (i - 7 / 2 + 0.5) * width
+    rect = ax3.bar(x_shift, day[i], width, label=days[i])
+    rects.append(rect)
 
 '''
 rects13 = ax3.bar(x3 - 2*width + offset, day[5], width, label=days[5])
@@ -133,7 +131,6 @@ ax3.set_xticks(x3)
 ax3.set_xticklabels(periods)
 ax3.legend()
 
-count = count + 2
 
 x4 = np.arange(len(periods))
 width = 0.3
@@ -146,6 +143,6 @@ ax4.set_xlabel('Period')
 ax4.set_title('Total Commits per Period')
 ax4.set_xticks(x4)
 ax4.set_xticklabels(periods)
-ax4.legend()
+#ax4.legend()
 
 plt.show()
