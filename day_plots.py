@@ -99,7 +99,7 @@ x4 = np.arange(len(periods))
 width = 0.3
 
 fig4, ax4 = plt.subplots()
-rects15 = ax4.bar(x4 - width + offset, sum_period, width, label=periods)
+rects15 = ax4.bar(x4 - width + offset, sum_period, width)
 
 ax4.set_ylabel('Total Commits')
 ax4.set_xlabel('Period')
