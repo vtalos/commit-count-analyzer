@@ -11,6 +11,8 @@ period5 = []
 
 day = [[] for _ in range(7)]
 
+sum_period = []
+
 # open the csv file and read its contents into the lists
 with open("CommitCountsDaily.csv") as csvfile:
     reader = csv.reader(csvfile)
@@ -29,6 +31,12 @@ with open("CommitCountsDaily.csv") as csvfile:
         day[i].append(period3[i])
         day[i].append(period4[i])
         day[i].append(period5[i])
+
+    sum_period.append(sum(period1))
+    sum_period.append(sum(period2))
+    sum_period.append(sum(period3))
+    sum_period.append(sum(period4))
+    sum_period.append(sum(period5))
     
 
 days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
@@ -86,5 +94,18 @@ ax3.set_title('Frequency by Time Period for each Weekend')
 ax3.set_xticks(x3)
 ax3.set_xticklabels(periods)
 ax3.legend()
+
+x4 = np.arange(len(periods))
+width = 0.3
+
+fig4, ax4 = plt.subplots()
+rects15 = ax4.bar(x4 - width + offset, sum_period, width, label=periods)
+
+ax4.set_ylabel('Total Commits')
+ax4.set_xlabel('Period')
+ax4.set_title('Total Commits per Period')
+ax4.set_xticks(x4)
+ax4.set_xticklabels(periods)
+ax4.legend()
 
 plt.show()
