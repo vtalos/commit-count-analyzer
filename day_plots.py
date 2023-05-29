@@ -17,7 +17,7 @@ with open(filename) as csvfile:
     periods = next(reader)  # Skip header row
     # Copy the reader
     reader_copy1, reader_copy2 = tee(reader)
-    num_of_periods = len(list(reader_copy1)) - 1
+    num_of_periods = len(periods)
     period = [[] for _ in range(num_of_periods)]
 
     # Append the number of commits for each day in each period
@@ -45,7 +45,7 @@ def freq_by_period():
     count = len(period)
     for i in range(1, len(period)):
         x_shift = x1 + (i - count / 2 + 0.5) * width
-        rect = ax.bar(x_shift, period[i], width, label=periods[i-1])
+        rect = ax.bar(x_shift, period[i], width, label=periods[i])
         rects.append(rect)
 
     # add labels and titles for the first plot
