@@ -19,15 +19,15 @@ with open(filename) as csvfile:
     reader_copy1, reader_copy2 = tee(reader)
     num_of_periods = len(list(reader_copy1)) - 1
     period = [[] for _ in range(num_of_periods)]
-
+    # Append the number of commits for each day in each period
     for row in reader_copy2:
         for i in range(1, len(period)):
             period[i].append(float(row[i]))
-
+    # Append for each week day the number of commits for every period
     for i in range(len(period[1])):
         for j in range(1, len(period)):
             day[i].append(period[j][i])
-
+    # Calculate total commits for each period
     for i in range(1, len(period)):
         sum_period.append(sum(period[i]))
     
