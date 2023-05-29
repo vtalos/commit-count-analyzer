@@ -2,13 +2,17 @@ import csv
 import numpy as np
 import matplotlib.pyplot as plt
 from itertools import tee
+import sys
+
+filename = sys.argv[1]
+plot = sys.argv[2]
 
 day = [[] for _ in range(7)]
 
 sum_period = []
 
 # open the csv file and read its contents into the lists
-with open("CommitCountsDaily.csv") as csvfile:
+with open(filename) as csvfile:
     reader = csv.reader(csvfile)
     next(reader)  # skip header row
     reader_copy1, reader_copy2 = tee(reader)
@@ -34,79 +38,89 @@ periods = ["2000-2004", "2005-2009", "2010-2014", "2015-2019", "2020-2023"]
 
 rects = []
 
-x1 = np.arange(len(days))
-width = 0.15
+def freq_by_period():
+    x1 = np.arange(len(days))
+    width = 0.15
 
-fig, ax = plt.subplots()
+    fig, ax = plt.subplots()
 
-count = len(period)
-for i in range(1, len(period)):
-    x_shift = x1 + (i - count / 2 + 0.5) * width
-    rect = ax.bar(x_shift, period[i], width, label=periods[i-1])
-    rects.append(rect)
+    count = len(period)
+    for i in range(1, len(period)):
+        x_shift = x1 + (i - count / 2 + 0.5) * width
+        rect = ax.bar(x_shift, period[i], width, label=periods[i-1])
+        rects.append(rect)
 
-
-# add labels and titles for the first plot
-ax.set_ylabel('Frequency')
-ax.set_xlabel('Day')
-ax.set_title('Frequency by Day and Time Period')
-ax.set_xticks(x1)
-ax.set_xticklabels(days)
-ax.legend()
-
-# create new x values for the second plot
-x2 = np.arange(len(periods))
-width = 0.1
-
-fig2, ax2 = plt.subplots()
-
-for i in range(len(day)):
-    x_shift = x2 + (i - (len(day) - 1) / 2) * width
-    #x_shift = x2 + (i - 7 / 2 + 0.5) * width
-    rect = ax2.bar(x_shift, day[i], width, label=days[i])
-    rects.append(rect)
+    # add labels and titles for the first plot
+    ax.set_ylabel('Frequency')
+    ax.set_xlabel('Day')
+    ax.set_title('Frequency by Day and Time Period')
+    ax.set_xticks(x1)
+    ax.set_xticklabels(days)
+    ax.legend()
 
 
-ax2.set_ylabel('Frequencies')
-ax2.set_xlabel('Periods')
-ax2.set_title('Frequency by Time Period for each Day')
-ax2.set_xticks(x2)
-ax2.set_xticklabels(periods)
-ax2.legend()
+def freq_by_day():
+    # create new x values for the second plot
+    x2 = np.arange(len(periods))
+    width = 0.1
 
-count = count+len(day)
+    fig2, ax2 = plt.subplots()
 
-x3 = np.arange(len(periods))
-width = 0.16
-offset = width * 1.5
+    for i in range(len(day)):   
+        x_shift = x2 + (i - (len(day) - 1) / 2) * width
+        #x_shift = x2 + (i - 7 / 2 + 0.5) * width
+        rect = ax2.bar(x_shift, day[i], width, label=days[i])
+        rects.append(rect)
 
-fig3, ax3 = plt.subplots()
-
-for i in range(2):
-    x_shift = x2 + (i - 1 / 2) * width
-    #x_shift = x2 + (i - 7 / 2 + 0.5) * width
-    rect = ax3.bar(x_shift, day[i], width, label=days[i])
-    rects.append(rect)
-
-
-ax3.set_ylabel('Frequencies')
-ax3.set_xlabel('Periods')
-ax3.set_title('Frequency by Time Period for each Weekend')
-ax3.set_xticks(x3)
-ax3.set_xticklabels(periods)
-ax3.legend()
+    ax2.set_ylabel('Frequencies')
+    ax2.set_xlabel('Periods')
+    ax2.set_title('Frequency by Time Period for each Day')
+    ax2.set_xticks(x2)
+    ax2.set_xticklabels(periods)
+    ax2.legend()
 
 
-x4 = np.arange(len(periods))
-width = 0.3
+def freq_for_weekends():
+    x3 = np.arange(len(periods))
+    width = 0.16
+    offset = width * 1.5
 
-fig4, ax4 = plt.subplots()
-rects.append(ax4.bar(x4, sum_period, width))
+    fig3, ax3 = plt.subplots()
 
-ax4.set_ylabel('Total Commits')
-ax4.set_xlabel('Period')
-ax4.set_title('Total Commits per Period')
-ax4.set_xticks(x4)
-ax4.set_xticklabels(periods)
+    for i in range(2):
+        x_shift = x2 + (i - 1 / 2) * width
+        #x_shift = x2 + (i - 7 / 2 + 0.5) * width
+        rect = ax3.bar(x_shift, day[i], width, label=days[i])
+        rects.append(rect)
+
+    ax3.set_ylabel('Frequencies')
+    ax3.set_xlabel('Periods')
+    ax3.set_title('Frequency by Time Period for each Weekend')
+    ax3.set_xticks(x3)
+    ax3.set_xticklabels(periods)
+    ax3.legend()
+
+
+def total_commits_per_period():
+    x4 = np.arange(len(periods))
+    width = 0.3
+
+    fig4, ax4 = plt.subplots()
+    rects.append(ax4.bar(x4, sum_period, width))
+
+    ax4.set_ylabel('Total Commits')
+    ax4.set_xlabel('Period')
+    ax4.set_title('Total Commits per Period')
+    ax4.set_xticks(x4)
+    ax4.set_xticklabels(periods)
+
+if plot == "freq_by_period":
+    freq_by_period()
+elif plot == "freq_by_day":
+    freq_by_day()
+elif plot == "freq_for_weekends":
+    freq_for_weekends()
+else:
+    total_commits_per_period()
 
 plt.show()
