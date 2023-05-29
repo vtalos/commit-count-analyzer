@@ -14,11 +14,12 @@ sum_period = []
 # Open the csv file and read its contents into the lists
 with open(filename) as csvfile:
     reader = csv.reader(csvfile)
-    next(reader)  # Skip header row
+    periods = next(reader)  # Skip header row
     # Copy the reader
     reader_copy1, reader_copy2 = tee(reader)
     num_of_periods = len(list(reader_copy1)) - 1
     period = [[] for _ in range(num_of_periods)]
+
     # Append the number of commits for each day in each period
     for row in reader_copy2:
         for i in range(1, len(period)):
@@ -32,7 +33,6 @@ with open(filename) as csvfile:
         sum_period.append(sum(period[i]))
     
 days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-periods = ["2000-2004", "2005-2009", "2010-2014", "2015-2019", "2020-2023"]
 
 rects = []
 
