@@ -4,17 +4,18 @@ import matplotlib.pyplot as plt
 from itertools import tee
 import sys
 
-filename = sys.argv[1]
-plot = sys.argv[2]
-
+filename = sys.argv[1] # The first argument is the file name
+plot = sys.argv[2] # The second argument is the requested plot
+# day list contains the number of commits for each time period
 day = [[] for _ in range(7)]
 
 sum_period = []
 
-# open the csv file and read its contents into the lists
+# Open the csv file and read its contents into the lists
 with open(filename) as csvfile:
     reader = csv.reader(csvfile)
-    next(reader)  # skip header row
+    next(reader)  # Skip header row
+    # Copy the reader
     reader_copy1, reader_copy2 = tee(reader)
     num_of_periods = len(list(reader_copy1)) - 1
     period = [[] for _ in range(num_of_periods)]
@@ -24,11 +25,8 @@ with open(filename) as csvfile:
             period[i].append(float(row[i]))
 
     for i in range(len(period[1])):
-        day[i].append(period[1][i])
-        day[i].append(period[2][i])
-        day[i].append(period[3][i])
-        day[i].append(period[4][i])
-        day[i].append(period[5][i])
+        for j in range(1, len(period)):
+            day[i].append(period[j][i])
 
     for i in range(1, len(period)):
         sum_period.append(sum(period[i]))
