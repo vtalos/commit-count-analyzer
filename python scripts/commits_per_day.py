@@ -3,7 +3,6 @@ import subprocess
 from collections import defaultdict
 import os
 
-os.chdir('The_Dir_You_Want_To_Work_With') #change directory, if needed
 # Define the path to the repository folder
 repo_path = 'php-src.git' 
 
