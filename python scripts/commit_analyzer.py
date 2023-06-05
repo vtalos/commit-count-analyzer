@@ -30,7 +30,6 @@ for i in range(1, len(period)):
 
 observed_freq = np.transpose(cont_table)
 
-#observed_freq = np.array(cont_table)
 print(observed_freq)
 
 # perform the chi-square test
