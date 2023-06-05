@@ -1,26 +1,32 @@
 import csv
+from itertools import tee
 from scipy.stats import chi2_contingency
+import numpy as np
 
-# create empty lists for each time period
-period1 = []
-period2 = []
-period3 = []
-period4 = []
-period5 = []
+days = 7
+period = []
 
 # open the csv file and read its contents into the lists
-with open("percentages.csv") as csvfile:
+with open("CommitCountsDaily.csv") as csvfile:
     reader = csv.reader(csvfile)
-    next(reader)  # skip header row
-    for row in reader:
-        period1.append(float(row[0]))
-        period2.append(float(row[1]))
-        period3.append(float(row[2]))
-        period4.append(float(row[3]))
-        period5.append(float(row[4]))
+    periods = next(reader)  # skip header row
+    reader_copy1, reader_copy2 = tee(reader)
+    num_of_periods = len(periods)
+    period = [[] for _ in range(num_of_periods)]
+    
+    for row in reader_copy2:
+        for i in range(1, len(period)):
+            period[i].append(float(row[i]))
 
 # create a contingency table of observed frequencies
-observed_freq = np.array([period1, period2, period3, period4, period5])
+cont_table = []
+for i in range(1, len(period)):
+    cont_table.append(period[i])
+
+observed_freq = np.transpose(cont_table)
+
+#observed_freq = np.array(cont_table)
+print(observed_freq)
 
 # perform the chi-square test
 chi2_stat, p_val, dof, expected_freq = chi2_contingency(observed_freq)
