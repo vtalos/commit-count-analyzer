@@ -1,38 +1,49 @@
 import csv
+from itertools import tee
 from scipy.stats import chi2_contingency
+import numpy as np
+import sys
+import argparse
 
-# create empty lists for each time period
-period1 = []
-period2 = []
-period3 = []
-period4 = []
-period5 = []
+parser = argparse.ArgumentParser(description="A script for implementing chi square test")
+
+parser.add_argument("filename", help="The csv file to implement chi square test")
+
+filename = sys.argv[1] # The first argument is the file name
 
 # open the csv file and read its contents into the lists
-with open("percentages.csv") as csvfile:
+with open(filename) as csvfile:
     reader = csv.reader(csvfile)
-    next(reader)  # skip header row
-    for row in reader:
-        period1.append(float(row[0]))
-        period2.append(float(row[1]))
-        period3.append(float(row[2]))
-        period4.append(float(row[3]))
-        period5.append(float(row[4]))
+    periods = next(reader)  # skip header row
+    reader_copy1, reader_copy2 = tee(reader)
+    num_of_periods = len(periods)
+    period = [[] for _ in range(num_of_periods)]
+    
+    for row in reader_copy2:
+        for i in range(1, len(period)):
+            period[i].append(float(row[i]))
 
 # create a contingency table of observed frequencies
-observed_freq = np.array([period1, period2, period3, period4, period5])
+cont_table = []
+for i in range(1, len(period)):
+    cont_table.append(period[i])
 
-# perform the chi-square test
-chi2_stat, p_val, dof, expected_freq = chi2_contingency(observed_freq)
+observed_freq = np.transpose(cont_table)
 
-print("Chi-square statistic:", chi2_stat)
-print("P-value:", p_val)
+def chi_square(observed_freq):
+    print(observed_freq)
 
-# check the p-value
-if p_val < 0.05:
-    print("The null hypothesis can be rejected. There is a statistically significant relationship between the time period and the observed frequency.")
-else:
-    print("The null hypothesis cannot be rejected. There is no statistically significant relationship between the time period and the observed frequency.")
+    # perform the chi-square test
+    chi2_stat, p_val, dof, expected_freq = chi2_contingency(observed_freq)
+
+    print("Chi-square statistic:", chi2_stat)
+    print("P-value:", p_val)
+
+    # check the p-value
+    if p_val < 0.05:
+        print("The null hypothesis can be rejected. There is a statistically significant relationship between the time period and the observed frequency.")
+    else:
+        print("The null hypothesis cannot be rejected. There is no statistically significant relationship between the time period and the observed frequency.")
 
 
-
+chi_square(observed_freq)
