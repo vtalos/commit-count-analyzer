@@ -2,11 +2,14 @@ import csv
 from itertools import tee
 from scipy.stats import chi2_contingency
 import numpy as np
+import sys
+
+filename = sys.argv[1] # The argument is the file name
 
 period = []
 
 # open the csv file and read its contents into the lists
-with open("HourlyCommits.csv") as csvfile:
+with open(filename) as csvfile:
     reader = csv.reader(csvfile)
     periods = next(reader)  # skip header row
     reader_copy1, reader_copy2 = tee(reader)
