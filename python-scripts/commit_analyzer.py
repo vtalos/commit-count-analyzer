@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser(description="A script for implementing chi squa
 
 parser.add_argument("filename", help="The csv file to implement chi square test")
 
-filename = sys.argv[1] # The first argument is the file name
+filename = sys.argv[1] # The argument is the csv file name
 
 # open the csv file and read its contents into the lists
 with open(filename) as csvfile:
