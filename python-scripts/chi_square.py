@@ -1,0 +1,1 @@
+print("chi square test")
