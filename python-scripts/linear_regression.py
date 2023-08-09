@@ -4,7 +4,6 @@ import numpy as np
 import sys
 import argparse
 import statsmodels.api as sm
-
 import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser(description="A script for implementing chi square test")
@@ -43,11 +42,12 @@ with open(filename) as csvfile:
     for i in range(1, len(period)):
         sum_period.append(sum(period[i]))
 
-trif = [1, 2, 3, 4, 5, 6]
+per = range(1, len(periods))
+periods = periods[1:len(periods)]
 data = all_commits[int(week_day)]
 
-# Adding a constant term for the intercept
-X = sm.add_constant(trif)
+# Add a constant term for the intercept
+X = sm.add_constant(per)
 y = np.array(data)
 
 # Fit the linear regression model
@@ -55,3 +55,17 @@ model = sm.OLS(y, X).fit()
 
 # Print the model summary
 print(model.summary())
+
+# Create a scatter plot of the data points
+plt.scatter(per, y, label="Data Points")
+
+# Plot the linear regression line
+regression_line = model.params[0] + model.params[1] * np.array(per)
+plt.plot(per, regression_line, color='red', label="Regression Line")
+
+plt.xlabel("Period")
+plt.ylabel("Number of Commits")
+plt.title("Linear Regression Analysis")
+plt.legend()
+plt.grid(True)
+plt.show()
