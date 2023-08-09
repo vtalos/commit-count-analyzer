@@ -1,9 +1,11 @@
 import csv
 from itertools import tee
-from scipy.stats import chi2_contingency
 import numpy as np
 import sys
 import argparse
+import statsmodels.api as sm
+
+import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser(description="A script for implementing chi square test")
 
@@ -41,4 +43,15 @@ with open(filename) as csvfile:
     for i in range(1, len(period)):
         sum_period.append(sum(period[i]))
 
+trif = [1, 2, 3, 4, 5, 6]
 data = all_commits[int(week_day)]
+
+# Adding a constant term for the intercept
+X = sm.add_constant(trif)
+y = np.array(data)
+
+# Fit the linear regression model
+model = sm.OLS(y, X).fit()
+
+# Print the model summary
+print(model.summary())
