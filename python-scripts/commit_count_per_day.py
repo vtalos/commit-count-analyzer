@@ -1,6 +1,6 @@
+from collections import defaultdict
 from git import Repo
 import argparse
-from collections import defaultdict
 import csv
 
 # Handle the arguments
