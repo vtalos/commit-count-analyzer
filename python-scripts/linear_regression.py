@@ -6,10 +6,10 @@ import argparse
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
 
-parser = argparse.ArgumentParser(description="A script for implementing chi square test")
+parser = argparse.ArgumentParser(description="A script for implementing linear regression")
 
 parser.add_argument("filename", help="The csv file to get the data from")
-parser.add_argument("day", help="The day of the week to implement the chi square test")
+parser.add_argument("day", help="The day of the week to implement the linear regression")
 
 filename = sys.argv[1] # The first argument is the filename
 week_day = sys.argv[2] # The second argument is the day of the week
