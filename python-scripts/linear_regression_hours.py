@@ -5,7 +5,7 @@ from itertools import tee
 import sys
 
 filename = sys.argv[1] # The first argument is the file name
-time_block = sys.argv[2] # The second argument is the time block to keep for the linear regression
+time_block = int(sys.argv[2]) # The second argument is the time block to keep for the linear regression
 
 hours = []
 
@@ -25,3 +25,9 @@ with open(filename) as csvfile:
     # Split day in 1-hour blocks
     for row in reader_copy3:
         hours.append(row[0])
+
+data = []
+
+for per in period:
+    if len(per) > 0:
+        data.append(per[time_block])
