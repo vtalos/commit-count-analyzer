@@ -28,3 +28,11 @@ for commit in repo.iter_commits():
         day_index = commit.authored_datetime.weekday()
         interval_index = (commit_year - args.start_year) // args.interval
         commit_counts[day_index][interval_index] += 1
+
+# Write the commit counts in a CSV file
+with open('CommitCountsPerDay.csv', 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow(['Day'] + [f'{year}-{year+args.interval-1}' for year in range(args.start_year, args.end_year+1, args.interval)])  # Write the year intervals as the first row
+    
+    for day_index, day in enumerate(days_of_week):
+        writer.writerow([day] + [str(count) for count in commit_counts[day_index]])
