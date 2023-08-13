@@ -34,7 +34,6 @@ for per in period:
         data.append(per[time_block])
 
 p = range(1, len(periods))
-print(p, "AAAAAAAAAAAA")
 
 # Add a constant term for the intercept
 X = sm.add_constant(p)
@@ -55,7 +54,7 @@ plt.plot(p, regression_line, color='red', label="Regression Line")
 
 plt.xlabel("Period")
 plt.ylabel("Number of Commits")
-plt.title("Linear Regression Analysis")
+plt.title(f"Linear Regression Analysis for time block {hours[time_block]}")
 plt.legend()
 plt.grid(True)
 # Set integer ticks for the x-axis
