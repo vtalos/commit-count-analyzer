@@ -10,9 +10,10 @@ parser = argparse.ArgumentParser(description='Creates a csv containing the commi
 parser.add_argument('start_year', type=int, help='The year commit counting starts')
 parser.add_argument('end_year', type=int, help='The year commit counting stops')
 parser.add_argument('interval', type=int, help='How many years a single interval contains')
+parser.add_argument('contents', type=str, choices=["proportions", "total"], help='The contents of the csv (proportions or total)')
 args = parser.parse_args()
 
-repo_path = 'C:\\Users\\zimpr\\OneDrive\\Desktop\\TipMe\\TipMe'  # Replace with repo path
+repo_path = 'repo\\path'  # Replace with repo path
 repo = Repo(repo_path)
 
 days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
