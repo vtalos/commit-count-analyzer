@@ -12,7 +12,7 @@ parser.add_argument('end_year', type=int, help='The year commit counting stops')
 parser.add_argument('interval', type=int, help='How many years a single interval contains')
 args = parser.parse_args()
 
-repo_path = 'repo\\path'  # Replace with repo path
+repo_path = 'C:\\Users\\zimpr\\OneDrive\\Desktop\\TipMe\\TipMe'  # Replace with repo path
 repo = Repo(repo_path)
 
 days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -46,3 +46,18 @@ def write_counts():
         
         for day_index, day in enumerate(days_of_week):
             writer.writerow([day] + [str(count) for count in commit_counts[day_index]])
+
+
+def write_proportions():
+    # Calculate and write the commit percentages to a new CSV file
+    with open('CommitPercentagesPerDay.csv', 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['Day'] + [f'{year}-{year+args.interval-1}' for year in range(args.start_year, args.end_year+1, args.interval)])  # Write the year intervals as the first row
+        
+        for day_index, day in enumerate(days_of_week):
+            percentages = []  # Create an empty list to store the percentages for the current day
+            for interval in range(num_of_periods):
+                total_commits_interval = sum(commit_counts[other_day][interval] for other_day in range(len(days_of_week)))
+                percentage = commit_counts[day_index][interval] / total_commits_interval * 100 if total_commits_interval != 0 else 0
+                percentages.append(percentage)  # Append each percentage as a separate element
+            writer.writerow([day] + percentages)  # Write the day and the list of percentages in the CSV file
