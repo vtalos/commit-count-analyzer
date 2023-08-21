@@ -62,3 +62,9 @@ def write_proportions():
                 percentage = commit_counts[day_index][interval] / total_commits_interval * 100 if total_commits_interval != 0 else 0
                 percentages.append(percentage)  # Append each percentage as a separate element
             writer.writerow([day] + percentages)  # Write the day and the list of percentages in the CSV file
+
+
+if args.contents == 'proportions':
+    write_proportions()
+else:
+    write_counts()
