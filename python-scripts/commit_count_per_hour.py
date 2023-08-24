@@ -41,4 +41,17 @@ for repository in repo_list:
             interval_index = (commit_year - args.start_year) // args.interval
 
             if 0 <= interval_index < num_of_periods:
-                commit_counts[hour_index][interval_index] += 1            
+                commit_counts[hour_index][interval_index] += 1
+
+
+def write_counts(args, commit_counts):
+    with open('CommitCountsPerHour.csv', 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        hours = [time(hour=h) for h in range(24)]
+        header_row = ['Hour'] + [f'{year}-{year+args.interval-1}' for year in range(args.start_year, args.end_year+1, args.interval)]
+        writer.writerow(header_row)
+
+        for hour_index, hour in enumerate(hours):
+            writer.writerow([hour.strftime('%H:%M')] + [str(count) for count in commit_counts[hour_index]])
+
+                
