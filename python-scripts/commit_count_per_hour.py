@@ -17,7 +17,7 @@ parser.add_argument('contents', type=str, choices=["proportions", "total"],
 parser.add_argument('--repos', type=str, default='repos', help='Directory containing repositories')
 args = parser.parse_args()
 
-# Check for valid arguments
+# Check argument validity
 if args.start_year > args.end_year:
     parser.error("Invalid arguments: start_year must be before end_year")
 
@@ -36,14 +36,17 @@ for repository in repo_list:
     repo_path = os.path.join(args.repos, repository)
     repo = Repo(repo_path)
 
+    # Iterate through every commit
     for commit in repo.iter_commits():
         commit_year = commit.authored_datetime.year
 
+        # Get the commits in the requested range
         if args.start_year <= commit_year <= args.end_year:
             commit_time = commit.authored_datetime.time()
             hour_index = commit_time.hour
             interval_index = (commit_year - args.start_year) // args.interval
 
+            # Increase the commit count in the current hour and period by 1
             if 0 <= interval_index < num_of_periods:
                 commit_counts[hour_index][interval_index] += 1
 
