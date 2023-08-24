@@ -15,6 +15,12 @@ parser.add_argument('contents', type=str, choices=["proportions", "total"],
 parser.add_argument('--repos', type=str, default='repos', help='Directory containing repositories')
 args = parser.parse_args()
 
+if args.start_year > args.end_year:
+    parser.error("Invalid arguments: start_year must be before end_year")
+
+if args.interval <= 0:
+    parser.error("Invalid argument: interval must be a positive integer")
+
 repo_list = [f for f in os.listdir(args.repos) if os.path.isdir(os.path.join(args.repos, f))]
 
 num_of_periods = (args.end_year - args.start_year + 1) // args.interval
