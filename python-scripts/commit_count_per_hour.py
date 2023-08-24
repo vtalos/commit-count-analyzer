@@ -17,17 +17,21 @@ parser.add_argument('contents', type=str, choices=["proportions", "total"],
 parser.add_argument('--repos', type=str, default='repos', help='Directory containing repositories')
 args = parser.parse_args()
 
+# Check for valid arguments
 if args.start_year > args.end_year:
     parser.error("Invalid arguments: start_year must be before end_year")
 
 if args.interval <= 0:
     parser.error("Invalid argument: interval must be a positive integer")
 
+# Define the list of repositories to use for counting
 repo_list = [f for f in os.listdir(args.repos) if os.path.isdir(os.path.join(args.repos, f))]
 
+# Calculate the number of periods
 num_of_periods = (args.end_year - args.start_year + 1) // args.interval
 commit_counts = defaultdict(lambda: [0] * num_of_periods)
 
+# Count total commits for all repos
 for repository in repo_list:
     repo_path = os.path.join(args.repos, repository)
     repo = Repo(repo_path)
@@ -45,6 +49,7 @@ for repository in repo_list:
 
 
 def write_counts(args, commit_counts):
+    # Calculate and write the commit counts in a CSV file
     with open('CommitCountsPerHour.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         hours = [time(hour=h) for h in range(24)]
@@ -55,7 +60,7 @@ def write_counts(args, commit_counts):
             writer.writerow([hour.strftime('%H:%M')] + [str(count) for count in commit_counts[hour_index]])
 
 def write_proportions(args, commit_counts):
-    # Calculate and write the commit percentages to a new CSV file
+    # Calculate and write the commit percentages in a CSV file
     with open('CommitPercentagesPerHour.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         hours = [time(hour=h) for h in range(24)]
