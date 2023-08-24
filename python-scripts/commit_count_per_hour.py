@@ -70,4 +70,7 @@ def write_proportions(args, commit_counts):
                 percentages.append(percentage)
             writer.writerow([hour.strftime('%H:%M')] + percentages)
 
-                
+if args.contents == 'proportions':
+    write_proportions(args, commit_counts)
+else:
+    write_counts(args, commit_counts)                
