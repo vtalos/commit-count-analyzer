@@ -14,32 +14,41 @@ parser.add_argument('contents', type=str, choices=["proportions", "total"],
 parser.add_argument('--repos', type=str, default='repos', help='Directory containing repositories')
 args = parser.parse_args()
 
+# Handle invalid arguments for start and end year
 if args.start_year > args.end_year:
     parser.error("Invalid arguments: start_year must be before end_year")
 
+# Handle invalid argument for interval
 if args.interval <= 0:
     parser.error("Invalid argument: interval must be a positive integer")
 
+# Create a list containing every repository
 repo_list = [f for f in os.listdir(args.repos) if os.path.isdir(os.path.join(args.repos, f))]
 
+# Create a list containing every week day
 days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
+# Calculate the number of periods
 num_of_periods = (args.end_year - args.start_year + 1) // args.interval
 commit_counts = defaultdict(lambda: [0] * num_of_periods)
 
+# Iterate through every repo in repo list in order to get all the commits
 for repository in repo_list:
     repo_path = os.path.join(args.repos, repository)
     repo = Repo(repo_path)
 
+    # Iterate through every commit
     for commit in repo.iter_commits():
         commit_year = commit.authored_datetime.year
 
+        # Handle commits in the specified range
         if args.start_year <= commit_year <= args.end_year:
-            day_index = commit.authored_datetime.weekday()
+            day_index = commit.authored_datetime.weekday() # Get the index of the day the commit was made
+            # Calculate the column where the specific commit will be added in the CSV
             interval_index = (commit_year - args.start_year) // args.interval
 
+            # Handle cases where commit year is outside the specified range
             if interval_index < 0 or interval_index >= num_of_periods:
-                # Handle cases where commit year is outside the specified range
                 parser.error("Invalid arguments given")
 
             if 0 <= interval_index < num_of_periods:
@@ -47,6 +56,7 @@ for repository in repo_list:
 
 
 def write_counts(args, commit_counts, days_of_week, num_of_periods):
+     # Calculate and write the commit counts in a CSV file
     with open('CommitCountsPerDay.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         header_row = ['Day'] + [f'{year}-{year+args.interval-1}' for year in range(args.start_year, args.end_year+1, args.interval)]
@@ -56,6 +66,7 @@ def write_counts(args, commit_counts, days_of_week, num_of_periods):
             writer.writerow([day] + [str(count) for count in commit_counts[day_index]])
 
 def write_proportions(args, commit_counts, days_of_week, num_of_periods):
+     # Calculate and write the commit percentages in a CSV file
     with open('CommitPercentagesPerDay.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         header_row = ['Day'] + [f'{year}-{year+args.interval-1}' for year in range(args.start_year, args.end_year+1, args.interval)]
