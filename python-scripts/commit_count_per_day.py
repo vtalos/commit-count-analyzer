@@ -2,7 +2,6 @@ from collections import defaultdict
 from git import Repo
 import argparse
 import csv
-import sys
 import os
 
 parser = argparse.ArgumentParser(description='Creates a CSV containing commit count per day of the week '
