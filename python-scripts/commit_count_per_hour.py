@@ -45,6 +45,10 @@ for repository in repo_list:
             hour_index = commit_time.hour
             interval_index = (commit_year - args.start_year) // args.interval
 
+            # Handle cases where commit year is outside the specified range
+            if interval_index < 0 or interval_index >= num_of_periods:
+                parser.error("Invalid arguments given")
+
             # Increase the commit count in the current hour and period by 1
             if 0 <= interval_index < num_of_periods:
                 commit_counts[hour_index][interval_index] += 1
