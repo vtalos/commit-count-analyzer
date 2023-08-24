@@ -54,4 +54,20 @@ def write_counts(args, commit_counts):
         for hour_index, hour in enumerate(hours):
             writer.writerow([hour.strftime('%H:%M')] + [str(count) for count in commit_counts[hour_index]])
 
+def write_proportions(args, commit_counts):
+    # Calculate and write the commit percentages to a new CSV file
+    with open('CommitPercentagesPerHour.csv', 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        hours = [time(hour=h) for h in range(24)]
+        header_row = ['Hour'] + [f'{year}-{year+args.interval-1}' for year in range(args.start_year, args.end_year+1, args.interval)]
+        writer.writerow(header_row)
+
+        for hour_index, hour in enumerate(hours):
+            percentages = []
+            for interval in range(num_of_periods):
+                total_commits_interval = sum(commit_counts[other_hour][interval] for other_hour in range(24))
+                percentage = commit_counts[hour_index][interval] / total_commits_interval * 100 if total_commits_interval != 0 else 0
+                percentages.append(percentage)
+            writer.writerow([hour.strftime('%H:%M')] + percentages)
+
                 
