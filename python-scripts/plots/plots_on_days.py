@@ -35,7 +35,6 @@ with open(filename) as csvfile:
     
 days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
-periods = periods[1:]
 
 rects = []
 
@@ -118,10 +117,13 @@ def total_commits_per_period():
 if plot == "freq_by_period":
     freq_by_period()
 elif plot == "freq_by_day":
+    periods = periods[1:]
     freq_by_day()
 elif plot == "freq_for_weekends":
+    periods = periods[1:]
     freq_for_weekends()
 else:
+    periods = periods[1:]
     total_commits_per_period()
 
 plt.show()
