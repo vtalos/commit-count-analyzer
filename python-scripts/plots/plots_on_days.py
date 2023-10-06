@@ -86,7 +86,7 @@ def freq_for_weekends():
     fig3, ax3 = plt.subplots()
 
     for i in range(2):
-        x_shift = x2 + (i - 1 / 2) * width
+        x_shift = x3 + (i - 1 / 2) * width
         #x_shift = x2 + (i - 7 / 2 + 0.5) * width
         rect = ax3.bar(x_shift, day[i], width, label=days[i])
         rects.append(rect)
