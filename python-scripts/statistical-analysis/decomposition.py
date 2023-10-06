@@ -6,7 +6,7 @@ from statsmodels.graphics.tsaplots import plot_pacf
 from statsmodels.tsa.stattools import adfuller
 
 # Read the CSV file
-data = pd.read_csv("C:\\Users\\karyo\Dropbox\\PC\\Desktop\\Έρευνα\\Scripts\\commit-count-analyzer\\python-scripts\\CommitCountsPerDay.csv")
+data = pd.read_csv("C:\\Users\\karyo\\Desktop\\Έρευνα\\commit-count-analyzer\\python-scripts\\csv-files\\CommitCountsPerDay.csv")
 
 # Encode weekdays as pseudonumbers
 weekday_dict = {'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5, 'Saturday': 6, 'Sunday': 7}
@@ -27,7 +27,7 @@ df_pivot.plot(figsize=(12,8))
 plt.legend().remove()
 plt.xlabel('Day')
 plt.ylabel('Commits')
-
+plt.show()
 #Stationarity of data check
 result = adfuller(data_reshaped['Commits'])
 print('ADF Statistic: %f' % result[0])
@@ -39,7 +39,8 @@ for key, value in result[4].items():
 #Auto Correlation check
 data_reshaped.drop(['Day', 'Commits'], axis=1, inplace=True)
 fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(14,6), sharex=False, sharey=False)
-ax1 = plot_acf(data_reshaped, lags=50, ax=ax1)
-ax2 = plot_pacf(data_reshaped, lags=50, ax=ax2)
+ax1 = plot_acf(data_reshaped, lags=7, ax=ax1)
+ax2 = plot_pacf(data_reshaped, lags=7, ax=ax2)
+
 
 
