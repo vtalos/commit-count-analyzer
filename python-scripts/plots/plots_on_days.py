@@ -15,6 +15,7 @@ sum_period = []
 with open(filename) as csvfile:
     reader = csv.reader(csvfile)
     periods = next(reader)  # Skip header row
+
     # Copy the reader
     reader_copy1, reader_copy2 = tee(reader)
     num_of_periods = len(periods)
@@ -33,6 +34,8 @@ with open(filename) as csvfile:
         sum_period.append(sum(period[i]))
     
 days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
+periods = periods[1:]
 
 rects = []
 
@@ -88,7 +91,7 @@ def freq_for_weekends():
     for i in range(2):
         x_shift = x3 + (i - 1 / 2) * width
         #x_shift = x2 + (i - 7 / 2 + 0.5) * width
-        rect = ax3.bar(x_shift, day[i], width, label=days[i])
+        rect = ax3.bar(x_shift, day[i+5], width, label=days[i+5])
         rects.append(rect)
 
     ax3.set_ylabel('Frequencies')
