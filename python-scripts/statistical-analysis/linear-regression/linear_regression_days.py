@@ -56,6 +56,8 @@ model = sm.OLS(y, X).fit()
 # Print the model summary
 print(model.summary())
 
+days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
 # Create a scatter plot of the data points
 plt.scatter(per, y, label="Data Points")
 
@@ -65,7 +67,7 @@ plt.plot(per, regression_line, color='red', label="Regression Line")
 
 plt.xlabel("Period")
 plt.ylabel("Number of Commits")
-plt.title("Linear Regression Analysis")
+plt.title(f"Linear Regression Analysis for {days[week_day]}")
 plt.legend()
 plt.grid(True)
 plt.show()
