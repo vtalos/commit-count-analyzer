@@ -66,7 +66,7 @@ else:
 days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 # Create a time series plot
-plt.plot(data, marker='o', linestyle='-')
+plt.plot(periods, data, marker='o', linestyle='-')
 plt.xlabel('Time')
 plt.ylabel('Data Values')
 plt.title(f'Time Series Data for {days[int(week_day)]}')
