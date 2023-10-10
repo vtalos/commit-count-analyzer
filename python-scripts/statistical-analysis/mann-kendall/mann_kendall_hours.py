@@ -1,3 +1,4 @@
+import pymannkendall as mk
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
@@ -32,3 +33,23 @@ data = []
 for per in period:
     if len(per) > 0:
         data.append(per[time_block])
+
+# Apply Mann Kendall Test
+result = mk.original_test(data)
+
+test_statistic = result[0]
+p_value = result[2]
+
+# Print the results
+print("Mann-Kendall Test Statistic:", test_statistic)
+print("P-Value:", p_value)
+
+# Interpret the results based on the p-value and significance level
+alpha = 0.05  # Significance level
+
+if p_value < alpha:
+    print("There is a statistically significant trend in the data.")
+else:
+    print("There is no statistically significant trend in the data.")
+
+
