@@ -48,18 +48,20 @@ data = all_commits[int(week_day)]
 result = mk.original_test(data)
 
 test_statistic = result[0]
-p_value = result[1]
+p_value = result[2]
 
 # Print the results
 print("Mann-Kendall Test Statistic:", test_statistic)
 print("P-Value:", p_value)
 
 # Interpret the results based on the p-value and significance level
-alpha = 0.05  # Set your significance level
+alpha = 0.05  # Significance level
+
 if p_value < alpha:
     print("There is a statistically significant trend in the data.")
 else:
     print("There is no statistically significant trend in the data.")
+
 
 days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
