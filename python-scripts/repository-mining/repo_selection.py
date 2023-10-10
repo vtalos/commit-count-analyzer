@@ -161,7 +161,7 @@ def get_contributors_years(owner, repo):
 repos = []
 filtered_repos = []
 final_repos = []
-auth_token = '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'
+auth_token = 'USE_YOUR_TOKEN'
 # reads the csv file that contains the repositories from Github Search mining tool
 with open("github_search_results.csv", "r") as file:
     reader = csv.reader(file)
