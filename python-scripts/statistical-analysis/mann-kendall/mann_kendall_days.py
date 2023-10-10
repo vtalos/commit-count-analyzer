@@ -61,11 +61,13 @@ if p_value < alpha:
 else:
     print("There is no statistically significant trend in the data.")
 
+days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
 # Create a time series plot
 plt.plot(data, marker='o', linestyle='-')
 plt.xlabel('Time')
 plt.ylabel('Data Values')
-plt.title('Time Series Data')
+plt.title(f'Time Series Data for {days[int(week_day)]}')
 plt.grid(True)
 
 # Display the trend line
