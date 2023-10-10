@@ -1,1 +1,1 @@
-print("Mann Kendall for Days")
+import pymannkendall as mk
