@@ -45,6 +45,7 @@ per = range(1, len(periods))
 periods = periods[1:len(periods)]
 data = all_commits[int(week_day)]
 
+# Apply Mann Kendall Test
 result = mk.original_test(data)
 
 test_statistic = result[0]
@@ -62,7 +63,6 @@ if p_value < alpha:
 else:
     print("There is no statistically significant trend in the data.")
 
-
 days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 # Create a time series plot
@@ -72,7 +72,7 @@ plt.ylabel('Data Values')
 plt.title(f'Time Series Data for {days[int(week_day)]}')
 plt.grid(True)
 
-# Display the trend line
+# Display the trend line if exists
 if p_value < alpha:
     plt.plot(data, marker='o', linestyle='-', color='red', label='Trend Line')
     plt.legend(['Data', 'Trend Line'])
