@@ -61,6 +61,21 @@ if p_value < alpha:
 else:
     print("There is no statistically significant trend in the data.")
 
+# Create a time series plot
+plt.plot(data, marker='o', linestyle='-')
+plt.xlabel('Time')
+plt.ylabel('Data Values')
+plt.title('Time Series Data')
+plt.grid(True)
+
+# Display the trend line
+if p_value < alpha:
+    plt.plot(data, marker='o', linestyle='-', color='red', label='Trend Line')
+    plt.legend(['Data', 'Trend Line'])
+
+# Show the plot
+plt.show()
+
 
 
 
