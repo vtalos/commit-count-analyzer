@@ -60,6 +60,7 @@ plt.xlabel('Time')
 plt.ylabel('Data Values')
 plt.title(f'Time Series Data for block {hours[int(time_block)]}')
 plt.grid(True)
+plt.xticks(rotation=35)
 
 # Display the trend line if exists
 if p_value < alpha:
