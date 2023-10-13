@@ -67,7 +67,7 @@ plt.plot(per, regression_line, color='red', label="Regression Line")
 
 plt.xlabel("Period")
 plt.ylabel("Number of Commits")
-plt.title(f"Linear Regression Analysis for {days[week_day]}")
+plt.title(f"Linear Regression Analysis for {days[int(week_day)]}")
 plt.legend()
 plt.grid(True)
 plt.show()
