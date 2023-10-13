@@ -71,6 +71,7 @@ plt.xlabel('Time')
 plt.ylabel('Data Values')
 plt.title(f'Time Series Data for {days[int(week_day)]}')
 plt.grid(True)
+plt.xticks(rotation=40)
 
 # Display the trend line if exists
 if p_value < alpha:
