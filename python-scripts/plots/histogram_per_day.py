@@ -5,7 +5,7 @@ from itertools import tee
 import sys
 
 filename = sys.argv[1] # The first argument is the file name
-day = sys.argv[2] # The second argument is the preferred day
+week_day = sys.argv[2] # The second argument is the preferred day
 # day list contains the number of commits for each week day in every time period
 day = [[] for _ in range(7)]
 
@@ -34,3 +34,23 @@ with open(filename) as csvfile:
         sum_period.append(sum(period[i]))
     
 days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
+periods = periods[1:]
+
+x = np.arange(len(periods))
+width = 0.16
+offset = width * 1.5
+
+fig, ax = plt.subplots()
+
+rect = ax.bar(x, day[int(week_day)], width, label=days[int(week_day)])
+
+ax.set_ylabel('Frequencies')
+ax.set_xlabel('Periods')
+ax.set_title('Frequency by Time Period for each Day')
+ax.set_xticks(x)
+ax.set_xticklabels(periods)
+ax.legend()
+plt.xticks(rotation=35)
+
+plt.show()
