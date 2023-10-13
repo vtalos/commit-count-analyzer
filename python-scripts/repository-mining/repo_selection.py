@@ -63,44 +63,6 @@ def monthly_commit_count(project, sha='master', token=None):
     return not_dense
 
 
-
-
-def enough_contributors(owner, repo):
-    url = f"https://api.github.com/repos/{owner}/{repo}/stats/contributors"
-
-    headers = {
-        "Authorization": f"Bearer {auth_token}",
-        "Accept": "application/vnd.github.v3+json"
-    }
-    response = requests.get(url, headers=headers)
-
-    # Redo the request, so the status code 202 may change to 200.
-    # Don't do the request more than 4 times
-    j = 0
-    while response.status_code == 202 and j <= 4:
-        time.sleep(5)
-        response = requests.get(url, headers=headers)
-        j = + 1
-
-    contributors = []
-    page = 1
-    per_page = 100
-    while True:
-        params = {"page": page, "per_page": per_page}
-        response = requests.get(url, headers=headers, params=params)
-        if response.status_code == 200:
-            contributors += response.json()
-            if page > 2:
-                return True
-            if len(response.json()) < per_page:
-                break
-            page += 1
-            time.sleep(1)
-        else:
-            print("Failed to retrieve contributors:", response.status_code)
-            break
-    return False
-
 def get_contributors_years(owner, repo):
     """Receives the owner of a repo and the repo 
     name and return the timestamp of the first commit """
@@ -149,8 +111,8 @@ def process_chunk(chunk,auth_token):
         year = get_contributors_years(owner, repo_name)
         if year== None:
             print(repo)
-        if year < datetime.datetime(2005, 1, 1) and enough_contributors(owner, repo_name) :
-            if monthly_commit_count(repo, sha, auth_token) < 20 :
+        if year < datetime.datetime(2005, 1, 1):
+            if monthly_commit_count(repo, sha, auth_token) < 20:
                 final_repos.append(repo)
     return final_repos
 
