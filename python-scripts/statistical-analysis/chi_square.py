@@ -31,8 +31,6 @@ for i in range(1, len(period)):
 observed_freq = np.transpose(cont_table)
 
 def chi_square(observed_freq):
-    print(observed_freq)
-
     # perform the chi-square test
     chi2_stat, p_val, dof, expected_freq = chi2_contingency(observed_freq)
 
