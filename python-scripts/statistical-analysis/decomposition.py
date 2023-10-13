@@ -6,7 +6,7 @@ from statsmodels.graphics.tsaplots import plot_pacf
 from statsmodels.tsa.stattools import adfuller
 
 # Read the CSV file
-data = pd.read_csv("C:\\Users\\karyo\\Desktop\\Έρευνα\\commit-count-analyzer\\python-scripts\\csv-files\\CommitCountsPerDay.csv")
+data = pd.read_csv("C:\\Users\\karyo\\Desktop\\Έρευνα\\commit-count-analyzer\\python-scripts\\csv-files\\CommitCountsPerDayInterval4.csv")
 
 # Encode weekdays as pseudonumbers
 weekday_dict = {'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5, 'Saturday': 6, 'Sunday': 7}
