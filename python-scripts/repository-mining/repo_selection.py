@@ -63,7 +63,7 @@ def monthly_commit_count(project, sha='master', token=None):
     return not_dense
 
 
-def get_contributors_years(owner, repo):
+def get_first_commit_year(owner, repo):
     """Receives the owner of a repo and the repo 
     name and return the timestamp of the first commit """
 
@@ -108,7 +108,7 @@ def process_chunk(chunk,auth_token):
         sha = re.split(r'\t+', stdout.decode('utf-8'))[0]
         owner = repo.split("/")[0]
         repo_name = repo.split("/")[1]
-        year = get_contributors_years(owner, repo_name)
+        year = get_first_commit_year(owner, repo_name)
         if year== None:
             print(repo)
         if year < datetime.datetime(2005, 1, 1):
