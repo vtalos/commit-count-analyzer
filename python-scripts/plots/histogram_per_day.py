@@ -43,7 +43,7 @@ offset = width * 1.5
 
 fig, ax = plt.subplots()
 
-rect = ax.bar(x, day[int(week_day)], width, label=days[int(week_day)])
+rect = ax.bar(x, day[int(week_day)], width=0.5, label=days[int(week_day)])
 
 ax.set_ylabel('Frequencies')
 ax.set_xlabel('Periods')
