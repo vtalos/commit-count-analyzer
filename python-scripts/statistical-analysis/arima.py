@@ -2,6 +2,11 @@ from matplotlib import pyplot as plt
 import pandas as pd
 from statsmodels.graphics.tsaplots import plot_acf
 from statsmodels.tsa.stattools import adfuller
+import statsmodels.tsa.arima.model
+from pandas import DataFrame
+from math import sqrt
+from sklearn import mean_squared_error
+
 
 # Read the CSV file
 data = pd.read_csv("..\\csv-files\\CommitCountsPerDayInterval4.csv")
@@ -37,3 +42,39 @@ result=adfuller(data.Commits.dropna())
 print('p-value:',result[1])
 result=adfuller(data.Commits.diff().dropna())
 print('p-value:',result[1])
+
+model = statsmodels.tsa.arima.model.ARIMA(endog=data.Commits, order=(1, 0, 0))
+res = model.fit()
+print(res.summary())
+# line plot of residuals
+residuals = DataFrame(res.resid)
+residuals.plot()
+plt.show()
+# density plot of residuals
+residuals.plot(kind='kde')
+plt.show()
+# summary stats of residuals
+
+# split into train and test sets
+X = data.Commits
+size = int(len(X) * 0.66)
+train, test = X[0:size], X[size:len(X)]
+history = [x for x in train]
+predictions = list()
+# walk-forward validation
+for t in range(len(test)):
+	model =  statsmodels.tsa.arima.model.ARIMA(history, order=(5,1,0))
+	model_fit = model.fit()
+	output = model_fit.forecast()
+	yhat = output[0]
+	predictions.append(yhat)
+	obs = test[t]
+	history.append(obs)
+	print('predicted=%f, expected=%f' % (yhat, obs))
+# evaluate forecasts
+rmse = sqrt(mean_squared_error(test, predictions))
+print('Test RMSE: %.3f' % rmse)
+# plot forecasts against actual outcomes
+plt.plot(test)
+plt.plot(predictions, color='red')
+plt.show()
