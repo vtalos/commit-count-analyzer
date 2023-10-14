@@ -38,8 +38,6 @@ days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sun
 periods = periods[1:]
 
 x = np.arange(len(periods))
-width = 0.16
-offset = width * 1.5
 
 fig, ax = plt.subplots()
 
