@@ -49,3 +49,14 @@ per = range(1, len(periods))
 periods = periods[1:len(periods)]
 data = all_commits[int(week_day)]
 time_periods = range(1, len(periods) + 1)
+
+# Perform ordinary least squares (OLS) regression
+X = sm.add_constant(time_periods)  # Add a constant term (intercept) to the model
+model = sm.OLS(data, X).fit()
+
+# Check linearity with a scatter plot
+plt.scatter(time_periods, data)
+plt.xlabel("Time Periods")
+plt.ylabel("Frequencies")
+plt.title("Scatter Plot of Time Periods vs. Frequencies")
+plt.show()
