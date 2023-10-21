@@ -65,3 +65,12 @@ plt.show()
 durbin_watson_stat = sms.durbin_watson(model.resid)
 print("Durbin-Watson statistic:", durbin_watson_stat)
 # A value around 2 suggests no significant autocorrelation.
+
+# Check Homoscedasticity with a plot of residuals vs. predicted values
+predicted_values = model.predict(X)
+residuals = model.resid
+plt.scatter(predicted_values, residuals)
+plt.xlabel("Predicted Values")
+plt.ylabel("Residuals")
+plt.title("Residuals vs. Predicted Values")
+plt.show()
