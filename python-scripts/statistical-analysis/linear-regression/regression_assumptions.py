@@ -74,3 +74,17 @@ plt.xlabel("Predicted Values")
 plt.ylabel("Residuals")
 plt.title("Residuals vs. Predicted Values")
 plt.show()
+
+# Check Normality of Residuals with a histogram
+residuals = model.resid
+plt.hist(residuals, bins=20)
+plt.xlabel("Residuals")
+plt.ylabel("Frequency")
+plt.title("Histogram of Residuals")
+plt.show()
+
+# Check for normality using a Q-Q plot
+residuals_standardized = (residuals - residuals.mean()) / residuals.std()
+stats.probplot(residuals_standardized, dist="norm", plot=plt)
+plt.title("Normal Q-Q Plot")
+plt.show()
