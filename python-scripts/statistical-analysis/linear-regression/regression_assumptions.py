@@ -60,3 +60,8 @@ plt.xlabel("Time Periods")
 plt.ylabel("Frequencies")
 plt.title("Scatter Plot of Time Periods vs. Frequencies")
 plt.show()
+
+# Check Independence of Residuals with a Durbin-Watson test
+durbin_watson_stat = sms.durbin_watson(model.resid)
+print("Durbin-Watson statistic:", durbin_watson_stat)
+# A value around 2 suggests no significant autocorrelation.
