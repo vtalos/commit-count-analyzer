@@ -5,7 +5,7 @@ from statsmodels.tsa.stattools import adfuller
 import statsmodels.tsa.arima.model
 from pandas import DataFrame
 from math import sqrt
-from sklearn import mean_squared_error
+
 
 
 # Read the CSV file
@@ -48,11 +48,11 @@ res = model.fit()
 print(res.summary())
 # line plot of residuals
 residuals = DataFrame(res.resid)
-residuals.plot()
+residuals.plot(title='residuals')
 plt.show()
 # density plot of residuals
 residuals.plot(kind='kde')
-plt.show()
+#plt.show()
 # summary stats of residuals
 
 # split into train and test sets
@@ -62,7 +62,8 @@ train, test = X[0:size], X[size:len(X)]
 history = [x for x in train]
 predictions = list()
 # walk-forward validation
-for t in range(len(test)):
+for t in range(13,20):
+	
 	model =  statsmodels.tsa.arima.model.ARIMA(history, order=(5,1,0))
 	model_fit = model.fit()
 	output = model_fit.forecast()
@@ -72,9 +73,15 @@ for t in range(len(test)):
 	history.append(obs)
 	print('predicted=%f, expected=%f' % (yhat, obs))
 # evaluate forecasts
-rmse = sqrt(mean_squared_error(test, predictions))
+"""
+rmse = sqrt(sklearn.metrics.mean_squared_error(test, predictions))
 print('Test RMSE: %.3f' % rmse)
+"""
+print(type(test))
+
 # plot forecasts against actual outcomes
+x=[test[i] for i in range(13,20)]
+y=[i for i in range(13,20)]
 plt.plot(test)
 plt.plot(predictions, color='red')
 plt.show()
