@@ -57,12 +57,12 @@ for repository in repo_list:
                 commit_counts[day_index][interval_index] += 1
 
 
-def write_counts(args, commit_counts, days_of_week, num_of_periods):
+def write_counts(args, commit_counts, days_of_week):
      # Calculate and write the commit counts in a CSV file
     with open('CommitCountsPerDay.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
-        # header_row = ['Day'] + [f'{year}-{year+args.interval-1}' for year in range(args.start_year, args.end_year+1, args.interval)]
-        header_row = ['Day'] + ['{}-{}'.format(year, year+args.interval-1) for year in range(args.start_year, args.end_year+1, args.interval)]
+        header_row = ['Day'] + [f'{year}-{year+args.interval-1}' for year in range(args.start_year, args.end_year+1, args.interval)]
+        # header_row = ['Day'] + ['{}-{}'.format(year, year+args.interval-1) for year in range(args.start_year, args.end_year+1, args.interval)]
         writer.writerow(header_row)
 
         for day_index, day in enumerate(days_of_week):
@@ -72,8 +72,8 @@ def write_proportions(args, commit_counts, days_of_week, num_of_periods):
      # Calculate and write the commit percentages in a CSV file
     with open('CommitPercentagesPerDay.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
-        # header_row = ['Day'] + [f'{year}-{year+args.interval-1}' for year in range(args.start_year, args.end_year+1, args.interval)]
-        header_row = ['Day'] + ['{}-{}'.format(year, year+args.interval-1) for year in range(args.start_year, args.end_year+1, args.interval)]
+        header_row = ['Day'] + [f'{year}-{year+args.interval-1}' for year in range(args.start_year, args.end_year+1, args.interval)]
+        #header_row = ['Day'] + ['{}-{}'.format(year, year+args.interval-1) for year in range(args.start_year, args.end_year+1, args.interval)]
         writer.writerow(header_row)
 
         for day_index, day in enumerate(days_of_week):
