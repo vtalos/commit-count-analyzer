@@ -13,7 +13,9 @@ parser.add_argument('end_year', type=int, help='The year commit counting stops')
 parser.add_argument('interval', type=int, help='How many years a single interval contains')
 parser.add_argument('contents', type=str, choices=["proportions", "total"],
                     help='The contents of the CSV (proportions or total)')
-parser.add_argument('--repos', type=str, default='repos', help='Directory containing repositories')
+parser.add_argument('repos', type=str, help='Directory containing repository names')
+parser.add_argument('repos_path', type=str, help='The path for the file that contains the cloned repos')
+
 args = parser.parse_args()
 
 # Check argument validity
@@ -23,8 +25,9 @@ if args.start_year > args.end_year:
 if args.interval <= 0:
     parser.error("Invalid argument: interval must be a positive integer")
 
-# Define the list of repositories to use for counting
-repo_list = [f for f in os.listdir(args.repos) if os.path.isdir(os.path.join(args.repos, f))]
+# Read the file and split the lines to get repository names
+with open(args.repos, 'r') as file:
+    repo_list = [line.strip() for line in file.readlines()]
 
 # Calculate the number of periods
 num_of_periods = (args.end_year - args.start_year + 1) // args.interval
@@ -32,7 +35,7 @@ commit_counts = defaultdict(lambda: [0] * num_of_periods)
 
 # Count total commits for all repos
 for repository in repo_list:
-    repo_path = os.path.join(args.repos, repository)
+    repo_path = os.path.join(args.repos_path, repository)
     repo = Repo(repo_path)
 
     # Iterate through every commit

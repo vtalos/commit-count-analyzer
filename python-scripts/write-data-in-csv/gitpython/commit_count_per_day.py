@@ -11,7 +11,8 @@ parser.add_argument('end_year', type=int, help='The year commit counting stops')
 parser.add_argument('interval', type=int, help='How many years a single interval contains')
 parser.add_argument('contents', type=str, choices=["proportions", "total"],
                     help='The contents of the CSV (proportions or total)')
-parser.add_argument('--repos', type=str, default='repos', help='Directory containing repositories')
+parser.add_argument('repos', type=str, help='Directory containing repository names')
+parser.add_argument('repos_path', type=str, help='The path for the file that contains the cloned repos')
 args = parser.parse_args()
 
 # Handle invalid arguments for start and end year
@@ -22,8 +23,9 @@ if args.start_year > args.end_year:
 if args.interval <= 0:
     parser.error("Invalid argument: interval must be a positive integer")
 
-# Create a list containing every repository
-repo_list = [f for f in os.listdir(args.repos) if os.path.isdir(os.path.join(args.repos, f))]
+# Read the file and split the lines to get repository names
+with open(args.repos, 'r') as file:
+    repo_list = [line.strip() for line in file.readlines()]
 
 # Create a list containing every week day
 days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -34,7 +36,7 @@ commit_counts = defaultdict(lambda: [0] * num_of_periods)
 
 # Iterate through every repo in repo list in order to get all the commits
 for repository in repo_list:
-    repo_path = os.path.join(args.repos, repository)
+    repo_path = os.path.join(args.repos_path, repository)
     repo = Repo(repo_path)
 
     # Iterate through every commit
