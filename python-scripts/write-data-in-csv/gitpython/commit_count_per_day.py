@@ -88,5 +88,5 @@ def write_proportions(args, commit_counts, days_of_week, num_of_periods):
 if args.contents == 'proportions':
     write_proportions(args, commit_counts, days_of_week, num_of_periods)
 else:
-    write_counts(args, commit_counts, days_of_week, num_of_periods)
+    write_counts(args, commit_counts, days_of_week)
 
