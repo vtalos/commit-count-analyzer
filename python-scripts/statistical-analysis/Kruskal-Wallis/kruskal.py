@@ -10,7 +10,7 @@ data=data.iloc[:,1:]
 data=np.array(data)
 groups=[0]*len(data)
 for i in range(0, len(data)):
-    groups[i]=data[i] 
+    groups[i]=data[i] # groups contain the number of commits for each Day/Hour
     print(groups[i])
 statistic, p_value = kruskal(*groups)
 print("Kruskal-Wallis Test:")
