@@ -7,7 +7,8 @@ import sys
 import statsmodels.api as sm
 
 filename = sys.argv[1] # The first argument is the file name
-time_block = int(sys.argv[2]) # The second argument is the time block to keep for the linear regression
+time_block_start = int(sys.argv[2]) # The second argument is the time block to keep for the linear regression
+time_block_end = int(sys.argv[3]) # The third argument is the last time block to consider
 
 hours = []
 
@@ -32,7 +33,15 @@ data = []
 
 for per in period:
     if len(per) > 0:
-        data.append(per[time_block])
+
+        if time_block_start != time_block_end:
+            total = 0
+            for i in range(time_block_start, time_block_end):
+                total += per[i]
+        else:
+            total = per[time_block_start]
+
+        data.append(total)
 
 # Apply Mann Kendall Test
 result = mk.original_test(data)
@@ -55,17 +64,24 @@ else:
 periods = periods[1:len(periods)]
 
 # Create a time series plot
-plt.plot(periods, data, marker='o', linestyle='-')
 plt.xlabel('Time')
 plt.ylabel('Data Values')
-plt.title(f'Time Series Data for block {hours[int(time_block)]}')
+if time_block_start == time_block_end:
+    plt.title(f'Time Series Data for period {hours[int(time_block_start)]}')
+else:
+    plt.title(f'Time Series Data for period {hours[int(time_block_start)]} - {hours[int(time_block_end)]}')
+
+
 plt.grid(True)
 plt.xticks(rotation=35)
 
 # Display the trend line if exists
 if p_value < alpha:
-    plt.plot(data, marker='o', linestyle='-', color='red', label='Trend Line')
-    plt.legend(['Data', 'Trend Line'])
+    plt.plot(periods, data, marker='o', linestyle='-', color='red', label='Trend Line')
+    plt.legend(['Trend Line'])
+else:
+    plt.plot(periods, data, marker='o', linestyle='-')
+    plt.legend(['Data'])
 
 # Show the plot
 plt.show()
