@@ -66,22 +66,19 @@ else:
 days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 # Create a time series plot
-plt.plot(periods, data, marker='o', linestyle='-')
 plt.xlabel('Time')
-plt.ylabel('Data Values')
+plt.ylabel('Percentages (%)')
 plt.title(f'Time Series Data for {days[int(week_day)]}')
 plt.grid(True)
 plt.xticks(rotation=40)
 
 # Display the trend line if exists
 if p_value < alpha:
-    plt.plot(data, marker='o', linestyle='-', color='red', label='Trend Line')
-    plt.legend(['Data', 'Trend Line'])
+    plt.plot(periods, data, marker='o', linestyle='-', color='red', label='Trend Line')
+    plt.legend(['Trend Line'])
+else:
+    plt.plot(periods, data, marker='o', linestyle='-')
+    plt.legend(['Data'])
 
 # Show the plot
 plt.show()
-
-
-
-
-
