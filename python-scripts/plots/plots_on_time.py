@@ -1,11 +1,34 @@
+"""
+Script to generate a plot showing the frequency of commits for each block of hour within a specific time period.
+
+Usage:
+    python plots_on_time.py <filename.csv> <period_name>
+
+Arguments:
+    <filename.csv>: CSV file containing commit data.
+    <period_name>: String representing the name of the time period for which the hourly frequency plot is desired.
+
+Returns:
+    A plot showing the frequency of commits for each hour within the specified time period.
+
+Dependencies:
+    - numpy
+    - matplotlib
+    - csv
+
+Example:
+    python plots_on_time.py commit_data.csv 2020
+"""
+
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
 from itertools import tee
 import sys
 
-filename = sys.argv[1] # The first argument is the file name
-period_name = sys.argv[2] # The period is the second argument
+# Fetching the filename and period_name from command line arguments
+filename = sys.argv[1]
+period_name = sys.argv[2]
 
 hours = []
 
@@ -13,6 +36,7 @@ hours = []
 with open(filename) as csvfile:
     reader = csv.reader(csvfile)
     periods = next(reader)  # Skip header row
+    
     # Copy the reader
     reader_copy1, reader_copy2, reader_copy3 = tee(reader, 3)
     num_of_periods = len(periods)
@@ -27,6 +51,9 @@ with open(filename) as csvfile:
         hours.append(row[0])
 
 def hourly_frequences(period_hours, period):
+    """
+    Function to plot the frequency of commits for each hour within a specific time period.
+    """
     rects = []
     x1 = np.arange(len(hours))
     width = 0.5
@@ -38,14 +65,23 @@ def hourly_frequences(period_hours, period):
     rects.append(rect)
 
     ax.set_xticks(x1)
-    ax.set_xticklabels(hours, rotation=35, ha='right')
-    # add labels and titles for the first plot
-    ax.set_ylabel('Frequency')
-    ax.set_xlabel('Hour')
-    ax.set_title('Frequency by Hour in Time Period ' + str(period))
-    ax.set_xticks(x1)
-    ax.set_xticklabels(hours)
-    #ax.legend()
+    ax.set_xticklabels(hours, rotation=45)
+    
+    # Add labels and titles for the first plot
+    ax.set_ylabel('Percentage (%)', fontsize=35)
+    ax.set_xlabel('Hour', fontsize=35)
+
+    # Set xtick labels with empty strings for every other label
+    labels = ["" if i % 2 == 1 else hours[i] for i in range(len(hours))]
+    ax.set_xticklabels(labels)
+    
+    # Set tick font size
+    for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+        label.set_fontsize(30)
+
+    # Set tick font size
+    for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+        label.set_fontsize(30)
 
     plt.show()
 
@@ -54,4 +90,5 @@ for i in range(len(periods)):
     if periods[i] == period_name:
         hourly_frequences(period[i], period_name)
         break
+
 
