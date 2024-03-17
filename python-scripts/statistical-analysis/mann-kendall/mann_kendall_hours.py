@@ -7,7 +7,7 @@ import sys
 import statsmodels.api as sm
 
 filename = sys.argv[1] # The first argument is the file name
-time_block_start = int(sys.argv[2]) # The second argument is the time block to keep for the linear regression
+time_block_start = int(sys.argv[2]) # The second argument is the first time block to consider
 time_block_end = int(sys.argv[3]) # The third argument is the last time block to consider
 
 hours = []
@@ -63,24 +63,35 @@ else:
 
 periods = periods[1:len(periods)]
 
-# Create a time series plot
-plt.xlabel('Time')
-plt.ylabel('Data Values')
-if time_block_start == time_block_end:
-    plt.title(f'Time Series Data for period {hours[int(time_block_start)]}')
-else:
-    plt.title(f'Time Series Data for period {hours[int(time_block_start)]} - {hours[int(time_block_end)]}')
+# Plotting
+fig, ax = plt.subplots()
 
+# Create a time series plot
+plt.xlabel('Time', fontsize=35)
+plt.ylabel('Percentage (%)', fontsize=35)
+
+# Set xtick labels with empty strings for every other label
+labels = ["" if i % 2 == 1 else periods[i] for i in range(len(periods))]
+ax.set_xticks(range(len(labels)))
+ax.set_xticklabels(labels, rotation=45)
 
 plt.grid(True)
 plt.xticks(rotation=35)
 
+# Set tick font size
+for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+        label.set_fontsize(30)
+
+# Set tick font size
+for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+        label.set_fontsize(30)
+
 # Display the trend line if exists
 if p_value < alpha:
-    plt.plot(periods, data, marker='o', linestyle='-', color='red', label='Trend Line')
+    plt.plot(periods, data, marker='o', linestyle='-', color='red', label='Trend Line', linewidth=5, markersize=15)
     plt.legend(['Trend Line'])
 else:
-    plt.plot(periods, data, marker='o', linestyle='-')
+    plt.plot(periods, data, marker='o', linestyle='-', linewidth=5, markersize=15)
     plt.legend(['Data'])
 
 # Show the plot
