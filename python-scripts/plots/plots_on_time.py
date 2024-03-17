@@ -90,5 +90,3 @@ for i in range(len(periods)):
     if periods[i] == period_name:
         hourly_frequences(period[i], period_name)
         break
-
-
