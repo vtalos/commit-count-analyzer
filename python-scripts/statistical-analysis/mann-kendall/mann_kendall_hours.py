@@ -89,10 +89,8 @@ for label in (ax.get_xticklabels() + ax.get_yticklabels()):
 # Display the trend line if exists
 if p_value < alpha:
     plt.plot(periods, data, marker='o', linestyle='-', color='red', label='Trend Line', linewidth=5, markersize=15)
-    plt.legend(['Trend Line'])
 else:
     plt.plot(periods, data, marker='o', linestyle='-', linewidth=5, markersize=15)
-    plt.legend(['Data'])
 
 # Show the plot
 plt.show()
