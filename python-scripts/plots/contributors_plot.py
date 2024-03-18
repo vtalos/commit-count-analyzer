@@ -34,11 +34,11 @@ with open(filename, 'r') as file:
 #set font sizes, ticks and plot the data
 fig, ax = plt.subplots()
 plt.plot(years, contributors_per_year, linestyle='-', marker='o', color='blue', linewidth=5, markersize=15)
-ax.set_xlabel('Year', fontsize = 20)
-ax.set_ylabel('Number of Contributors', fontsize = 20)
+ax.set_xlabel('Year', fontsize = 15)
+ax.set_ylabel('Number of Contributors', fontsize = 15)
 plt.xticks(range(2004, 2024, 2), rotation = 45)
 for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-        label.set_fontsize(15)
+        label.set_fontsize(12)
 plt.grid(True)
 plt.show()
 
