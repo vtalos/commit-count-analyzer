@@ -13,6 +13,7 @@ for year in {2004..2023}; do
         contributors_per_year=$(git log --after="$year-01-01" --before="$((year+1))-01-01" --format='%ae' | sort -u | wc -l) 
         contributors_per_year_all_repos=$((contributors_per_year_all_repos + contributors_per_year))  
         total_contributors=$((total_contributors + contributors_per_year)) 
+         echo "$year, $name, $contributors_per_year_all_repos
     done
     echo "$year: $contributors_per_year_all_repos" >> results.txt 
 done
