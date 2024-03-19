@@ -1,4 +1,5 @@
 #!/bin/bash
+# This script counts the number of contributors per year for all the projects in the projects-accepted.txt file
 set -eu
 DATA_LOCATION=$(pwd)
 REPO_LOCATION=/home/repos/github

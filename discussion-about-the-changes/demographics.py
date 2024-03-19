@@ -1,3 +1,31 @@
+"""
+Script to calculate the average years an active contributor of FreeBSD
+holds a commit bit.
+
+Description:
+    This script analyzes a dot file containing data about alumni and active
+    committers of FreeBSD to calculate the average number of years a contributor
+    holds a commit bit, providing insights into project engagement over time.
+
+Usage:
+    demographics.py <commiters-src.dot>
+
+Arguments:
+    <commiters-src.dot>: A dot file containing information about alumni and active
+                         committers of FreeBSD.
+
+Returns:
+    Average number of years a contributor holds a commit bit.
+
+Dependencies:
+    - matplotlib
+    - sys
+
+Example:
+    python demographics.py commiters-src.dot
+"""
+
+
 from datetime import datetime
 import sys
 
