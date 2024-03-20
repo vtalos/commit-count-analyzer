@@ -67,8 +67,8 @@ periods = periods[1:len(periods)]
 fig, ax = plt.subplots()
 
 # Create a time series plot
-plt.xlabel('Time', fontsize=35)
-plt.ylabel('Percentage (%)', fontsize=35)
+plt.xlabel('Time', fontsize=15)
+plt.ylabel('Commits (%)', fontsize=15)
 
 # Set xtick labels with empty strings for every other label
 labels = ["" if i % 2 == 1 else periods[i] for i in range(len(periods))]
@@ -80,11 +80,11 @@ plt.xticks(rotation=35)
 
 # Set tick font size
 for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-        label.set_fontsize(30)
+        label.set_fontsize(12)
 
 # Set tick font size
 for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-        label.set_fontsize(30)
+        label.set_fontsize(12)
 
 # Display the trend line if exists
 if p_value < alpha:
