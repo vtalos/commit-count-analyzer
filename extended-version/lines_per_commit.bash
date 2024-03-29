@@ -5,7 +5,7 @@ set -eu
 DATA_LOCATION=$(pwd)
 REPO_LOCATION=/home/repos/github
 
-# disable diff.renameLimit configuration
+# modify diff.renameLimit configuration
 git config diff.renames 5000
 
 for year in {2004..2023}; do
@@ -15,8 +15,8 @@ for year in {2004..2023}; do
     while IFS= read -r name; do
         dir_name="$REPO_LOCATION/$name"
         cd "$dir_name" || continue
-        lines_per_project=$(git log --after="$year-01-01" --before="$year-12-31" --stat |
-                            grep -E '\| *[0-9]+' |  awk -F'|' '{sum+=$2} END {print sum}')
+        lines_per_project=$(git log --after="2023-09-01" --stat | grep -E 'insertions' | 
+        awk '{insertions += $4} END {print insertions}')
         commits_per_project=$(git log --after="$year-01-01" --before="$year-12-31" --oneline | wc -l)
         total_lines=$((total_lines + lines_per_project))
         total_commits=$((total_commits + commits_per_project))
