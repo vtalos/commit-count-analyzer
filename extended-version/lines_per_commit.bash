@@ -6,7 +6,7 @@ DATA_LOCATION=$(pwd)
 REPO_LOCATION=/home/repos/github
 
 # disable diff.renameLimit configuration
-git config diff.renames 0
+git config diff.renames 5000
 
 for year in {2004..2023}; do
     total_lines=0
@@ -25,5 +25,6 @@ for year in {2004..2023}; do
     done < "$DATA_LOCATION/projects-accepted.txt"
     echo "year: $year total lines: $total_lines total commits: $total_commits"
     average_lines_per_commit=$(echo "scale=2; $total_lines / $total_commits" | bc)
+    echo "average lines per commit: $average_lines_per_commit"
     echo "$year: $average_lines_per_commit" >> "$DATA_LOCATION/lines_per_commit.txt"
 done
