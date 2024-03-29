@@ -16,11 +16,11 @@ for year in {2004..2023}; do
         dir_name="$REPO_LOCATION/$name"
         cd "$dir_name" || continue
         lines_per_project=$(git log --after="$year-01-01" --before="$year-12-31" --stat |
-                            grep -E '\| *[0-9]+' |  awk -F'|' '{sum=0; sum+=$2} END {print sum}')
+                            grep -E '\| *[0-9]+' |  awk -F'|' '{sum+=$2} END {print sum}')
         commits_per_project=$(git log --after="$year-01-01" --before="$year-12-31" --oneline | wc -l)
         total_lines=$((total_lines + lines_per_project))
         total_commits=$((total_commits + commits_per_project))
-        echo "$name $year $lines_per_project $commits_per_project"
+        echo "name: $name year: $year lines_per_project: $lines_per_project commits_per_project: $commits_per_project"
         echo "$total_lines $total_commits"
     done < "$DATA_LOCATION/projects-accepted.txt"
     echo "year: $year total lines: $total_lines total commits: $total_commits"
