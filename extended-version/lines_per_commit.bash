@@ -20,9 +20,10 @@ for year in {2004..2023}; do
         commits_per_project=$(git log --after="$year-01-01" --before="$year-12-31" --oneline | wc -l)
         total_lines=$((total_lines + lines_per_project))
         total_commits=$((total_commits + commits_per_project))
-        echo "$name $year $total_lines $total_commits"
+        echo "$name $year $lines_per_project $commits_per_project"
+        echo "$total_lines $total_commits"
     done < "$DATA_LOCATION/projects-accepted.txt"
-
+    echo "year: $year total lines: $total_lines total commits: $total_commits"
     average_lines_per_commit=$(echo "scale=2; $total_lines / $total_commits" | bc)
     echo "$year: $average_lines_per_commit" >> "$DATA_LOCATION/lines_per_commit.txt"
 done
