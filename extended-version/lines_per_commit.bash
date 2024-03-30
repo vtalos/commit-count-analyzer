@@ -16,7 +16,7 @@ for year in {2004..2023}; do
         dir_name="$REPO_LOCATION/$name"
         cd "$dir_name" || continue
         # count only the inserted lines, not the deleted lines
-        lines_per_project=$(git log --after="2023-09-01" --stat | grep -E 'insertions' | 
+        lines_per_project=$(git log --after="$year-01-01" --before="$year-12-31" --stat | grep -E 'insertions' | 
         awk '{insertions += $4} END {print insertions}')
         commits_per_project=$(git log --after="$year-01-01" --before="$year-12-31" --oneline | wc -l)
         total_lines=$((total_lines + lines_per_project))
