@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 #associative array to store commits count by timezone
 declare -A commits_by_timezone
 #array to store timezone offsets
@@ -32,6 +34,7 @@ while IFS= read -r name; do
     # Execute git log command with timezone offset
     commits_count=$(git log --before="2004-12-31" | grep -- "$timezone_offset" | wc -l)
     commits_by_timezone["$timezone_offset"]=$(( ${commits_by_timezone["$timezone_offset"]} + commits_count ))
+    echo "$name: $timezone_offset: $commits_count"
     done 
 done < "$DATA_LOCATION/projects-accepted.txt"
 
