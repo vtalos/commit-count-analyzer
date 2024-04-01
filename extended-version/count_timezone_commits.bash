@@ -24,6 +24,9 @@ for timezone_offset in ${timezones[@]}; do
     commits_by_timezone["$timezone_offset"]=0
 done
 
+DATA_LOCATION=$(pwd)
+REPO_LOCATION=/home/repos/github
+
 #Loop through projects
 while IFS= read -r name; do
     dir_name="$REPO_LOCATION/$name"
@@ -37,7 +40,6 @@ while IFS= read -r name; do
     echo "$name: $timezone_offset: $commits_count"
     done 
 done < "$DATA_LOCATION/projects-accepted.txt"
-
 # write results to the  file
 for timezone_offset in ${timezones[@]}; do
     echo "$timezone_offset: ${commits_by_timezone["$timezone_offset"]}" >> "$DATA_LOCATION/commits_by_timezone.txt"
