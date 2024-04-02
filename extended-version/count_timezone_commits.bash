@@ -1,5 +1,6 @@
 #!/bin/bash
-
+# This script counts how many commits were made in 
+# each timezone for a given year
 set -e
 
 #associative array to store commits count by timezone
