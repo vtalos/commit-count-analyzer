@@ -31,7 +31,7 @@ with open(filename, 'r') as file:
         #for each line retrieve the year and the contributors
         year, _, lines_to_commits_ratio = line.strip().partition(':')
         years.append(int(year.strip()))
-        lines_to_commits_ratio_per_year.append(int(lines_to_commits_ratio.strip()))
+        lines_to_commits_ratio_per_year.append(float(lines_to_commits_ratio.strip()))
 #set font sizes, ticks and plot the data
 fig, ax = plt.subplots()
 print(years)
