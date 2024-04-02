@@ -15,7 +15,6 @@ while IFS= read -r name; do
         awk '{ print $5 }' | awk '/^22/' | wc -l)
         commits_at_22_last_year=$(git log --after="$((year-1))-01-01" --before="$((year-1))-12-31" | grep Date |
         awk '{ print $5 }' | awk '/^22/' | wc -l)
-        diff= $((commits_at_22 - commits_at_22_last_year))
+        diff=$((commits_at_22 - commits_at_22_last_year))
         echo "$name: $commits_at_22 $commits_at_22_last_year $diff" >> "$DATA_LOCATION/check_spike.txt"
-    done < "$DATA_LOCATION/projects-accepted.txt"
-done
+done < "$DATA_LOCATION/projects-accepted.txt"
