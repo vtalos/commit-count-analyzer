@@ -1,8 +1,14 @@
 #!/bin/bash
 
+# This script checks if contributors have different timezone offset in their commits.
+# It iterates over all contributors and checks if the timzeone in their first and last commits are different.
+
 set -eu
-# Get a list of unique contributors' email addresses
+
+
+#hardcoded
 cd ../../Working_Patterns_Tex_Src
+# Get a list of unique contributors' email addresses
 contributors=$(git log --format='%ae' | sort -u)
 
 # Iterate over each contributor
