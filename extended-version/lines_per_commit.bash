@@ -5,8 +5,7 @@ set -eu
 DATA_LOCATION=$(pwd)
 REPO_LOCATION=/home/repos/github
 
-# modify diff.renameLimit configuration
-git config diff.renames 5000
+
 
 for year in {2004..2023}; do
     total_lines=0
