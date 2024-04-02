@@ -7,6 +7,9 @@ declare -A commits_by_timezone
 #array to store timezone offsets
 declare -a timezones
 
+#create array for the year in the arguements
+arguements=("$@")
+
 for i in {0..24}; do
     offset=$((i - 12))
     # Format offset with leading zeroes if needed
@@ -19,28 +22,31 @@ for i in {0..24}; do
     timezones+=("$timezone")
 done
 
-#initialize commits_by_timezone array
-for timezone_offset in ${timezones[@]}; do
-    commits_by_timezone["$timezone_offset"]=0
-done
-
 DATA_LOCATION=$(pwd)
 REPO_LOCATION=/home/repos/github
 
-#Loop through projects
-while IFS= read -r name; do
-    dir_name="$REPO_LOCATION/$name"
-    cd "$dir_name" || continue
+for year in ${arguements[@]}; do
+	echo "$year" >> "$DATA_LOCATION/commits_by_timezone.txt"
+	#initialize commits_by_timezone array
+	for timezone_offset in ${timezones[@]}; do
+    		commits_by_timezone["$timezone_offset"]=0
+	done
+	#Loop through projects
+	while IFS= read -r name; do
+    		dir_name="$REPO_LOCATION/$name"
+    		cd "$dir_name" || continue
 
-    # Loop through timezone offsets from -12 to +12
-    for timezone_offset in ${timezones[@]}; do
-    # Execute git log command with timezone offset
-    commits_count=$(git log --before="2004-12-31" | grep -- "$timezone_offset" | wc -l)
-    commits_by_timezone["$timezone_offset"]=$(( ${commits_by_timezone["$timezone_offset"]} + commits_count ))
-    echo "$name: $timezone_offset: $commits_count"
-    done 
-done < "$DATA_LOCATION/projects-accepted.txt"
-# write results to the  file
-for timezone_offset in ${timezones[@]}; do
-    echo "$timezone_offset: ${commits_by_timezone["$timezone_offset"]}" >> "$DATA_LOCATION/commits_by_timezone.txt"
+    		# Loop through timezone offsets from -12 to +12
+    		for timezone_offset in ${timezones[@]}; do
+    		# Execute git log command with timezone offset
+    		commits_count=$(git log --after="$year-01-01" --before="$year-12-31" | grep -- "$timezone_offset" | wc -l)
+    		commits_by_timezone["$timezone_offset"]=$(( ${commits_by_timezone["$timezone_offset"]} + commits_count ))
+    		echo "$name: $timezone_offset: $commits_count"
+    		done 
+	done < "$DATA_LOCATION/projects-accepted.txt"
+	# write results to the  file
+	for timezone_offset in ${timezones[@]}; do
+    		echo "$timezone_offset: ${commits_by_timezone["$timezone_offset"]}" >> "$DATA_LOCATION/commits_by_timezone.txt"
+	done
 done
+
