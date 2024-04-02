@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -eu
 # Get a list of unique contributors' email addresses
 cd ../../Working_Patterns_Tex_Src
 contributors=$(git log --format='%ae' | sort -u)
