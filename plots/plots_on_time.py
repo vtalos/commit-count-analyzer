@@ -56,7 +56,7 @@ def hourly_frequences(period_hours, period):
     """
     rects = []
     x1 = np.arange(len(hours))
-    width = 0.5
+    width = 0.6
 
     fig, ax = plt.subplots()
 
@@ -68,8 +68,8 @@ def hourly_frequences(period_hours, period):
     ax.set_xticklabels(hours, rotation=45)
     
     # Add labels and titles for the first plot
-    ax.set_ylabel('Commits (%)', fontsize=15)
-    ax.set_xlabel('Hour', fontsize=15)
+    ax.set_ylabel('Commits (%)', fontsize=35)
+    ax.set_xlabel('Hour', fontsize=35)
 
     # Set xtick labels with empty strings for every other label
     labels = ["" if i % 2 == 1 else hours[i] for i in range(len(hours))]
@@ -77,11 +77,11 @@ def hourly_frequences(period_hours, period):
     
     # Set tick font size
     for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-        label.set_fontsize(12)
+        label.set_fontsize(30)
 
     # Set tick font size
     for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-        label.set_fontsize(12)
+        label.set_fontsize(30)
 
     plt.show()
 

@@ -52,11 +52,11 @@ weekdays_line = plt.plot(range(2004, 2024), avg_n_of_commits_weekdays / avg_n_of
 
 # Set tick font size
 for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-        label.set_fontsize(30)
+        label.set_fontsize(35)
 
 # Set tick font size
 for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-        label.set_fontsize(30)
+        label.set_fontsize(35)
 
 plt.grid(True)
 plt.show()
