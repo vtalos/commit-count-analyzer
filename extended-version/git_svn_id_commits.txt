@@ -1,0 +1,2 @@
+Total commits in 2013 with 'git-svn-id': 0
+Total commits in [2005, 2023] excluding 2013 with 'git-svn-id': 27928
