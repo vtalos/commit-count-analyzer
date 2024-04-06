@@ -12,6 +12,8 @@ declare -a timezones
 #create array for the year in the arguements
 arguements=("$@")
 
+> "$DATA_LOCATION/commits_by_timezone.txt"
+
 for i in {0..24}; do
     offset=$((i - 12))
     # Format offset with leading zeroes if needed
@@ -41,7 +43,7 @@ for year in ${arguements[@]}; do
     		# Loop through timezone offsets from -12 to +12
     		for timezone_offset in ${timezones[@]}; do
     		# Execute git log command with timezone offset
-    		commits_count=$(git log --after="$year-01-01" --before="$year-12-31" | grep -- "$timezone_offset" | wc -l)
+    		commits_count=$(git log --after="$((year-1))-12-31" --before="$((year+1))-01-01" | grep -- "$timezone_offset" | wc -l)
     		commits_by_timezone["$timezone_offset"]=$(( ${commits_by_timezone["$timezone_offset"]} + commits_count ))
     		echo "$name: $timezone_offset: $commits_count"
     		done 

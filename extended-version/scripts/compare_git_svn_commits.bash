@@ -8,17 +8,18 @@ DATA_LOCATION=$(pwd)
 REPO_LOCATION=/home/repos/github
 total_commits_2013=0
 total_commits_excluding_2013=0
+> "$DATA_LOCATION/git_svn_id_commits.txt"
 
 while IFS= read -r name; do
     dir_name="$REPO_LOCATION/$name"
     cd "$dir_name" || continue
     
     # Count commits with "git-svn-id" in the commit message for 2013
-    commits_2013=$(git log --after="2013-01-01" --before="2013-12-31" --grep="git-svn-id" --oneline | wc -l)
+    commits_2013=$(git log --after="2012-12-31" --before="2014-01-01" --grep="git-svn-id" --oneline | wc -l)
     total_commits_2013=$((total_commits_2013 + commits_2013))
 
     # Count commits with "git-svn-id" in the commit message for the [2005, 2023] period excluding 2013
-    commits_excluding_2013=$(git log --after="2005-01-01" --before="2023-12-31" --grep="git-svn-id" --oneline --invert-grep --grep="2013" | wc -l)
+    commits_excluding_2013=$(git log --after="2003-12-31" --before="2024-01-01" --grep="git-svn-id" --oneline --invert-grep --grep="2013" | wc -l)
     total_commits_excluding_2013=$((total_commits_excluding_2013 + commits_excluding_2013))
 done < "$DATA_LOCATION/projects-accepted.txt"
 

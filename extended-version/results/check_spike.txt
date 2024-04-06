@@ -1,4 +1,5 @@
 2013
+commits, commits next year, difference, commits rest of the day
 exist-db/exist: 37 33 4 665
 apache/groovy: 40 20 20 1239
 ow2-proactive/scheduling: 0 2 -2 492

@@ -1,21 +1,22 @@
 """
-Script to plot the number of contributors from results.txt for each year.
+Script to plot the evolution of average number of inserted lines per commit
+for each year for our sample.
 
 Usage:
     contributors_plot.py <filename.txt>
 
 Arguments:
-    <filename.txt>: txt file containing the number of contributors for each year for all of the sample,
-    in this case the results.txt file.
+    <filename.txt>: txt file containing the average of inserted line per commits
+    for each year for all of the sample, in this case the results.txt file.
 
 Returns:
-    A plot showing the number of contributors for the sample for each year.
+    A plot showing the ratio of commits per line for the sample for each year.
 
 Dependencies:
     - matplotlib
     - sys
 Example:
-    python contributors_plot.py results.txt
+    python contributors_plot.py lines_per_commit.txt
 """
 
 import matplotlib.pyplot as plt

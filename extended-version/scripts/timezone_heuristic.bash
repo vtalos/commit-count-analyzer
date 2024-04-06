@@ -2,9 +2,8 @@
 
 # This script checks if contributors have different timezone offset in their commits.
 # It iterates over all contributors and checks if the timzeone in their first and last commits are different.
-
+# TODO: add softcoding and improve functionality
 set -eu
-
 
 #hardcoded
 cd ../../Working_Patterns_Tex_Src
