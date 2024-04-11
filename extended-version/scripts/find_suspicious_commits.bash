@@ -15,7 +15,9 @@ cd "$dir_name" || continue
 # Output git log for 2013 for 23:00-23:59
 spike_commits=$(git log --format="%ad - %s" --after="$((year -1))-12-31" --before="$((year +1))-01-01"|
 grep "23:5[7-9]:[0-5][0-9]" | grep "Tue Apr 16" |wc -l) 
-echo "Commits during 23:57-23:59 on 16 April for $name: $spike_commits "
-
+echo "Commits during 23:57-23:59 on 16 April for $name: $spike_commits"
+commits_rest_of_the_year=$(git log --format="%ad - %s" --after="$((year -1))-12-31" --before="$((year +1))-01-01"|
+grep "23:5[7-9]:[0-5][0-9]" | grep -v "Tue Apr 16" |wc -l)
+echo "Commits during 23:57-23:59 for the rest of the year for $name: $commits_rest_of_the_year"
 
     
