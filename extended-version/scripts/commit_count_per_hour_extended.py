@@ -18,7 +18,7 @@ parser.add_argument('repos_path', type=str, help='The path for the file that con
 args = parser.parse_args()
 
 
-def write_counts(args, commit_counts):
+def write_counts(args, commit_counts, branch):
     # Calculate and write the commit counts in a CSV file
     file= branch + 'Counts.csv'
     with open(file, 'w', newline='') as csvfile:
@@ -30,7 +30,7 @@ def write_counts(args, commit_counts):
         for hour_index, hour in enumerate(hours):
             writer.writerow([hour.strftime('%H:%M')] + [str(count) for count in commit_counts[hour_index]])
 
-def write_proportions(args, commit_counts):
+def write_proportions(args, commit_counts, branch):
     # Calculate and write the commit percentages in a CSV file
     file= branch + 'Percentages.csv'
     with open(file, 'w', newline='') as csvfile:

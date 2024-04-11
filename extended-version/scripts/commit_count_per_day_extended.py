@@ -14,7 +14,7 @@ parser.add_argument('contents', type=str, choices=["proportions", "total"],
 parser.add_argument('repos_path', type=str, help='The path for the file that contains the cloned repo')
 args = parser.parse_args()
 
-def write_counts(args, commit_counts, days_of_week):
+def write_counts(args, commit_counts, days_of_week, branch):
      # Calculate and write the commit counts in a CSV file
     file= branch + 'Counts.csv'
     with open(file, 'w', newline='') as csvfile:
@@ -26,7 +26,7 @@ def write_counts(args, commit_counts, days_of_week):
         for day_index, day in enumerate(days_of_week):
             writer.writerow([day] + [str(count) for count in commit_counts[day_index]])
 
-def write_proportions(args, commit_counts, days_of_week, num_of_periods):
+def write_proportions(args, commit_counts, days_of_week, num_of_periods, branch):
      # Calculate and write the commit percentages in a CSV file
     file= branch + 'Percentages.csv'
     with open(file, 'w', newline='') as csvfile:
