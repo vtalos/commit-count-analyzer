@@ -13,10 +13,39 @@ parser.add_argument('end_year', type=int, help='The year commit counting stops')
 parser.add_argument('interval', type=int, help='How many years a single interval contains')
 parser.add_argument('contents', type=str, choices=["proportions", "total"],
                     help='The contents of the CSV (proportions or total)')
-parser.add_argument('repos', type=str, help='Directory containing repository names')
-parser.add_argument('repos_path', type=str, help='The path for the file that contains the cloned repos')
+parser.add_argument('repos_path', type=str, help='The path for the file that contains the cloned repo')
 
 args = parser.parse_args()
+
+
+def write_counts(args, commit_counts):
+    # Calculate and write the commit counts in a CSV file
+    file= branch + 'Counts.csv'
+    with open(file, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        hours = [time(hour=h) for h in range(24)]
+        header_row = ['Hour'] + [f'{year}-{year+args.interval-1}' for year in range(args.start_year, args.end_year+1, args.interval)]
+        writer.writerow(header_row)
+
+        for hour_index, hour in enumerate(hours):
+            writer.writerow([hour.strftime('%H:%M')] + [str(count) for count in commit_counts[hour_index]])
+
+def write_proportions(args, commit_counts):
+    # Calculate and write the commit percentages in a CSV file
+    file= branch + 'Percentages.csv'
+    with open(file, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        hours = [time(hour=h) for h in range(24)]
+        header_row = ['Hour'] + [f'{year}-{year+args.interval-1}' for year in range(args.start_year, args.end_year+1, args.interval)]
+        writer.writerow(header_row)
+
+        for hour_index, hour in enumerate(hours):
+            percentages = []
+            for interval in range(num_of_periods):
+                total_commits_interval = sum(commit_counts[other_hour][interval] for other_hour in range(24))
+                percentage = commit_counts[hour_index][interval] / total_commits_interval * 100 if total_commits_interval != 0 else 0
+                percentages.append(percentage)
+            writer.writerow([hour.strftime('%H:%M')] + percentages)
 
 # Check argument validity
 if args.start_year > args.end_year:
@@ -24,8 +53,6 @@ if args.start_year > args.end_year:
 
 if args.interval <= 0:
     parser.error("Invalid argument: interval must be a positive integer")
-
-
 
 # Calculate the number of periods
 num_of_periods = (args.end_year - args.start_year + 1) // args.interval
@@ -55,36 +82,7 @@ for branch in branches:
             # Increase the commit count in the current hour and period by 1
             if 0 <= interval_index < num_of_periods:
                 commit_counts[hour_index][interval_index] += 1
-
-
-def write_counts(args, commit_counts):
-    # Calculate and write the commit counts in a CSV file
-    with open('CommitCountsPerHour.csv', 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        hours = [time(hour=h) for h in range(24)]
-        header_row = ['Hour'] + [f'{year}-{year+args.interval-1}' for year in range(args.start_year, args.end_year+1, args.interval)]
-        writer.writerow(header_row)
-
-        for hour_index, hour in enumerate(hours):
-            writer.writerow([hour.strftime('%H:%M')] + [str(count) for count in commit_counts[hour_index]])
-
-def write_proportions(args, commit_counts):
-    # Calculate and write the commit percentages in a CSV file
-    with open('CommitPercentagesPerHour.csv', 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        hours = [time(hour=h) for h in range(24)]
-        header_row = ['Hour'] + [f'{year}-{year+args.interval-1}' for year in range(args.start_year, args.end_year+1, args.interval)]
-        writer.writerow(header_row)
-
-        for hour_index, hour in enumerate(hours):
-            percentages = []
-            for interval in range(num_of_periods):
-                total_commits_interval = sum(commit_counts[other_hour][interval] for other_hour in range(24))
-                percentage = commit_counts[hour_index][interval] / total_commits_interval * 100 if total_commits_interval != 0 else 0
-                percentages.append(percentage)
-            writer.writerow([hour.strftime('%H:%M')] + percentages)
-
-if args.contents == 'proportions':
-    write_proportions(args, commit_counts)
-else:
-    write_counts(args, commit_counts)         
+    if args.contents == 'proportions':
+        write_proportions(args, commit_counts, branch)
+    else:
+        write_counts(args, commit_counts, branch)  
