@@ -12,8 +12,6 @@ declare -a timezones
 #create array for the year in the arguements
 arguements=("$@")
 
-> "$DATA_LOCATION/commits_by_timezone.txt"
-
 for i in {0..24}; do
     offset=$((i - 12))
     # Format offset with leading zeroes if needed
@@ -30,7 +28,7 @@ DATA_LOCATION=$(pwd)
 REPO_LOCATION=/home/repos/github
 
 for year in ${arguements[@]}; do
-	echo "$year" >> "$DATA_LOCATION/commits_by_timezone.txt"
+	echo "$year" >> "$DATA_LOCATION/commits_by_timezone_$year.txt"
 	#initialize commits_by_timezone array
 	for timezone_offset in ${timezones[@]}; do
     		commits_by_timezone["$timezone_offset"]=0
@@ -50,7 +48,6 @@ for year in ${arguements[@]}; do
 	done < "$DATA_LOCATION/projects-accepted.txt"
 	# write results to the  file
 	for timezone_offset in ${timezones[@]}; do
-    		echo "$timezone_offset: ${commits_by_timezone["$timezone_offset"]}" >> "$DATA_LOCATION/commits_by_timezone.txt"
+    		echo "$timezone_offset: ${commits_by_timezone["$timezone_offset"]}" >> "$DATA_LOCATION/commits_by_timezone_$year.txt"
 	done
 done
-
