@@ -16,7 +16,7 @@ args = parser.parse_args()
 
 def write_counts(args, commit_counts, days_of_week, branch):
      # Calculate and write the commit counts in a CSV file
-    file= branch + 'Counts.csv'
+    file= branch + 'DayCounts.csv'
     with open(file, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         header_row = ['Day'] + [f'{year}-{year+args.interval-1}' for year in range(args.start_year, args.end_year+1, args.interval)]
@@ -28,7 +28,7 @@ def write_counts(args, commit_counts, days_of_week, branch):
 
 def write_proportions(args, commit_counts, days_of_week, num_of_periods, branch):
      # Calculate and write the commit percentages in a CSV file
-    file= branch + 'Percentages.csv'
+    file= branch + 'DayPercentages.csv'
     with open(file, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         header_row = ['Day'] + [f'{year}-{year+args.interval-1}' for year in range(args.start_year, args.end_year+1, args.interval)]
