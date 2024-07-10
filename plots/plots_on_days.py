@@ -94,11 +94,6 @@ def freq_for_weekends():
         label.set_fontsize(35)
 
 
-    # Set tick font size
-    for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-        label.set_fontsize(35)
-
-
 def total_commits_per_period():
     """
     Function to plot the total commits per period.
@@ -117,11 +112,6 @@ def total_commits_per_period():
     labels = ["" if i % 2 == 1 else periods[i] for i in range(len(periods))]
     ax.set_xticklabels(labels, rotation=45)
     
-    # Set tick font size
-    for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-        label.set_fontsize(35)
-
-
     # Set tick font size
     for label in (ax.get_xticklabels() + ax.get_yticklabels()):
         label.set_fontsize(35)
