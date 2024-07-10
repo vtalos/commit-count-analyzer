@@ -20,7 +20,7 @@ args = parser.parse_args()
 
 def write_counts(args, commit_counts, branch):
     # Calculate and write the commit counts in a CSV file
-    file= branch + 'Counts.csv'
+    file= branch + 'HourCounts.csv'
     with open(file, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         hours = [time(hour=h) for h in range(24)]
@@ -32,7 +32,7 @@ def write_counts(args, commit_counts, branch):
 
 def write_proportions(args, commit_counts, branch):
     # Calculate and write the commit percentages in a CSV file
-    file= branch + 'Percentages.csv'
+    file= branch + 'HourPercentages.csv'
     with open(file, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         hours = [time(hour=h) for h in range(24)]
