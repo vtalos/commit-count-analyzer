@@ -25,6 +25,7 @@ import csv
 import numpy as np
 import matplotlib.pyplot as plt
 from itertools import tee
+import matplotlib.ticker as mticker
 import sys
 
 # Fetching the filename and plot_type from command line arguments
@@ -93,6 +94,9 @@ def freq_for_weekends():
     for label in (ax.get_xticklabels() + ax.get_yticklabels()):
         label.set_fontsize(35)
 
+    # Format y-axis to show values in thousands
+    ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, pos: f'{int(x/1000)}K'))
+
 
 def total_commits_per_period():
     """
@@ -115,6 +119,9 @@ def total_commits_per_period():
     # Set tick font size
     for label in (ax.get_xticklabels() + ax.get_yticklabels()):
         label.set_fontsize(35)
+
+    # Format y-axis to show values in thousands
+    ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, pos: f'{int(x/1000)}K'))
 
 
 if plot == "freq_for_weekends":
