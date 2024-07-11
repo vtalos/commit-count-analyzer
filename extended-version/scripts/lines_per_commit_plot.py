@@ -18,31 +18,36 @@ Dependencies:
 Example:
     python contributors_plot.py lines_per_commit.txt
 """
-
 import matplotlib.pyplot as plt
 import sys
 
 filename = sys.argv[1]
 years= []
 lines_to_commits_ratio_per_year = []
-#open the .txt and read its contents 
+
+# Open the .txt and read its contents 
 with open(filename, 'r') as file:
     lines = file.readlines()
     for line in lines:
-        #for each line retrieve the year and the contributors
+        # For each line retrieve the year and the contributors
         year, _, lines_to_commits_ratio = line.strip().partition(':')
         years.append(int(year.strip()))
         lines_to_commits_ratio_per_year.append(float(lines_to_commits_ratio.strip()))
-#set font sizes, ticks and plot the data
-fig, ax = plt.subplots()
+
 print(years)
 print(lines_to_commits_ratio_per_year)
+
+# Set font sizes, ticks and plot the data
+fig, ax = plt.subplots()
+
 plt.plot(years, lines_to_commits_ratio_per_year, linestyle='-', marker='o', color='blue', linewidth=5, markersize=15)
 ax.set_xlabel('Year', fontsize = 18)
-ax.set_ylabel('Lines to Commits Ratio', fontsize = 18)
+ax.set_ylabel('Lines to Commits Ratio', fontsize = 35)
 plt.xticks(range(2004, 2024, 2), rotation = 45)
+
 for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-        label.set_fontsize(15)
+        label.set_fontsize(35)
+
 plt.grid(True)
 plt.show()
 
