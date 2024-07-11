@@ -22,7 +22,7 @@ the distribution of commits across timezones:
 - Percentage of UTC+0000 commits: The percentage of commits made in the UTC+0000
   timezone.
 
-Finally, it prints the year-wise statistics sorted by year.
+Finally, it prints and saves the year-wise statistics sorted by year.
 """
 import os
 import numpy as np
@@ -75,10 +75,17 @@ def main(directory_path):
     # Sort by year
     year_stats.sort()
 
-    # Print results
+    # Print and save results
+    results = []
     for year, std_dev, cv, ent, percentage_utc in year_stats:
-        print(f"{year}: Std Dev = {std_dev:.2f}, CV = {cv:.2f}, Entropy = {ent:.2f}, UTC+0000 = {percentage_utc:.2f}%")
+        result = f"{year}: Std Dev = {std_dev:.2f}, CV = {cv:.2f}, Entropy = {ent:.2f}, UTC+0000 = {percentage_utc:.2f}%"
+        print(result)
+        results.append(result)
+    
+    # Save to file
+    with open(os.path.join(directory_path, "commit_variation_stats.txt"), 'w') as f:
+        for result in results:
+            f.write(result + "\n")
 
 if __name__ == "__main__":
     main("commits-data")
-
