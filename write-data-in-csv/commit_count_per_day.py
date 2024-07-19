@@ -3,6 +3,8 @@ from git import Repo
 import argparse
 import csv
 import os
+import subprocess
+from datetime import time
 
 parser = argparse.ArgumentParser(description='Creates a CSV containing commit count per day of the week '
                                               'for a given interval and repository')
@@ -14,6 +16,8 @@ parser.add_argument('contents', type=str, choices=["proportions", "total"],
 parser.add_argument('repos', type=str, help='Directory containing repository names')
 parser.add_argument('repos_path', type=str, help='The path for the file that contains the cloned repos')
 args = parser.parse_args()
+
+shell_path = os.getcwd()
 
 # Handle invalid arguments for start and end year
 if args.start_year > args.end_year:
@@ -52,6 +56,14 @@ for repository in repo_list:
             # Handle cases where commit year is outside the specified range
             if interval_index < 0 or interval_index >= num_of_periods:
                 parser.error("Invalid arguments given")
+            
+            commit_time = commit.authored_datetime
+            commit_time = commit.authored_datetime
+            if commit_time.strftime('%z') == "+0000"
+                result = subprocess.run([os.path.join(shell_path, "check_timezone.sh", commit.author.name]
+            if results.returncode ==0:
+                print("commit skipped")
+                continue
 
             if 0 <= interval_index < num_of_periods:
                 commit_counts[day_index][interval_index] += 1

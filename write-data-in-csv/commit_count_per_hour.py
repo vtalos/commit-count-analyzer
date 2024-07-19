@@ -25,6 +25,8 @@ if args.start_year > args.end_year:
 if args.interval <= 0:
     parser.error("Invalid argument: interval must be a positive integer")
 
+shell_path= os.getcwd()
+
 # Read the file and split the lines to get repository names
 with open(args.repos, 'r') as file:
     repo_list = [line.strip() for line in file.readlines()]
@@ -36,21 +38,21 @@ commit_counts = defaultdict(lambda: [0] * num_of_periods)
 # Count total commits for all repos
 for repository in repo_list:
     repo_path = os.path.join(args.repos_path, repository)
-    os.chdir(repo_path)
     repo = Repo(repo_path)
-
+    os.chdir(repo_path)
     # Iterate through every commit
     for commit in repo.iter_commits():
         commit_year = commit.authored_datetime.year
 
-        # Get the commits in the requested range
+       # Get the commits in the requested range
         if args.start_year <= commit_year <= args.end_year:
-            commit_time = commit.authored_datetime.time()
+            commit_time = commit.authored_datetime
             if commit_time.strftime('%z') == "+0000":
                     result = subprocess.run(
-                        ['./check_timezone.sh', commit.author, repo_path],
-                    )
+                        [os.path.join(shell_path, "check_timezone.sh"), commit.author.name], text=True)
+                    
                     if result.returncode == 0:
+                        print("commit skipped")
                         continue
             hour_index = commit_time.hour
             interval_index = (commit_year - args.start_year) // args.interval
