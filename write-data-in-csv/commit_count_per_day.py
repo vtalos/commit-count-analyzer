@@ -45,6 +45,7 @@ for repository in repo_list:
 
     # Iterate through every commit
     for commit in repo.iter_commits():
+
         commit_year = commit.authored_datetime.year
 
         # Handle commits in the specified range
@@ -58,11 +59,10 @@ for repository in repo_list:
                 parser.error("Invalid arguments given")
             
             commit_time = commit.authored_datetime
-            commit_time = commit.authored_datetime
             if commit_time.strftime('%z') == "+0000":
                 result = subprocess.run([os.path.join(shell_path, "check_timezone.sh"), commit.author.name])
+            
             if result.returncode ==0:
-                print("commit skipped")
                 continue
 
             if 0 <= interval_index < num_of_periods:

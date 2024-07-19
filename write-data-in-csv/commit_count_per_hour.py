@@ -53,8 +53,8 @@ for repository in repo_list:
                     )
                     
                     if result.returncode == 0:
-                        print("commit skipped")
                         continue
+                    
             hour_index = commit_time.hour
             interval_index = (commit_year - args.start_year) // args.interval
 
