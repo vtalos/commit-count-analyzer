@@ -35,8 +35,11 @@ with open(args.repos, 'r') as file:
 num_of_periods = (args.end_year - args.start_year + 1) // args.interval
 commit_counts = defaultdict(lambda: [0] * num_of_periods)
 
+commit_timezones = {}
+
 # Count total commits for all repos
 for repository in repo_list:
+    print(repository)
     repo_path = os.path.join(args.repos_path, repository)
     repo = Repo(repo_path)
     os.chdir(repo_path)
@@ -47,13 +50,17 @@ for repository in repo_list:
        # Get the commits in the requested range
         if args.start_year <= commit_year <= args.end_year:
             commit_time = commit.authored_datetime
-            if commit_time.strftime('%z') == "+0000":
+            author_year = (commit.author.name, commit_year)
+
+            if author_year not in commit_timezones:
                     result = subprocess.run(
                         [os.path.join(shell_path, "check_timezone.sh"), commit.author.name, str(commit_year)],
                     )
                     
-                    if result.returncode == 0:
-                        continue
+                    commit_timezones[author_year] = (result.returncode == 0)
+
+            if commit_timezones[author_year]:
+                continue
 
             hour_index = commit_time.hour
             interval_index = (commit_year - args.start_year) // args.interval
