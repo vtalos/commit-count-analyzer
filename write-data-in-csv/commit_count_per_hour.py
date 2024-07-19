@@ -49,12 +49,12 @@ for repository in repo_list:
             commit_time = commit.authored_datetime
             if commit_time.strftime('%z') == "+0000":
                     result = subprocess.run(
-                        [os.path.join(shell_path, "check_timezone.sh"), commit.author,commit_year , repo_path],
+                        [os.path.join(shell_path, "check_timezone.sh"), commit.author.name, commit_year , repo_path],
                     )
                     
                     if result.returncode == 0:
                         continue
-                    
+
             hour_index = commit_time.hour
             interval_index = (commit_year - args.start_year) // args.interval
 
