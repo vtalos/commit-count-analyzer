@@ -60,10 +60,9 @@ for repository in repo_list:
             
             commit_time = commit.authored_datetime
             if commit_time.strftime('%z') == "+0000":
-                result = subprocess.run([os.path.join(shell_path, "check_timezone.sh"), commit.author.name])
-            
-            if result.returncode ==0:
-                continue
+                result = subprocess.run([os.path.join(shell_path, "check_timezone.sh"), commit.author.name,str(commit_year)])
+                if result.returncode == 0:
+                    continue
 
             if 0 <= interval_index < num_of_periods:
                 commit_counts[day_index][interval_index] += 1

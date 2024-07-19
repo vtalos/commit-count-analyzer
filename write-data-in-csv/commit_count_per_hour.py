@@ -49,7 +49,7 @@ for repository in repo_list:
             commit_time = commit.authored_datetime
             if commit_time.strftime('%z') == "+0000":
                     result = subprocess.run(
-                        [os.path.join(shell_path, "check_timezone.sh"), commit.author.name, commit_year , repo_path],
+                        [os.path.join(shell_path, "check_timezone.sh"), commit.author.name, str(commit_year)],
                     )
                     
                     if result.returncode == 0:
