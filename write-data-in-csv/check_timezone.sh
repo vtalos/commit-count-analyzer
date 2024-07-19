@@ -1,0 +1,9 @@
+commit_author=$1
+commits_not_in_utc0=$(git log --pretty=format:"%ad %an" | grep "$commit_author" | grep -v +0000 | cut -d ' ' -f 6)
+if [ -z "$commits_not_in_utc0" ]; then
+    echo "skipped"
+    exit 0
+    
+else
+    exit 1
+fi

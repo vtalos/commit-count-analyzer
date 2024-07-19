@@ -1,10 +1,10 @@
 from collections import defaultdict
+import subprocess
 from git import Repo
 import argparse
 import csv
 import os
 from datetime import time
-
 
 parser = argparse.ArgumentParser(description='Creates a CSV containing the commit count per hour'
                                              'for a given interval and repository')
@@ -36,6 +36,7 @@ commit_counts = defaultdict(lambda: [0] * num_of_periods)
 # Count total commits for all repos
 for repository in repo_list:
     repo_path = os.path.join(args.repos_path, repository)
+    os.chdir(repo_path)
     repo = Repo(repo_path)
 
     # Iterate through every commit
@@ -45,6 +46,12 @@ for repository in repo_list:
         # Get the commits in the requested range
         if args.start_year <= commit_year <= args.end_year:
             commit_time = commit.authored_datetime.time()
+            if commit_time.strftime('%z') == "+0000":
+                    result = subprocess.run(
+                        ['./check_timezone.sh', commit.author, repo_path],
+                    )
+                    if result.returncode == 0:
+                        continue
             hour_index = commit_time.hour
             interval_index = (commit_year - args.start_year) // args.interval
 
