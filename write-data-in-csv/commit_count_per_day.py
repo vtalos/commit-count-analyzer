@@ -37,35 +37,46 @@ days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturda
 # Calculate the number of periods
 num_of_periods = (args.end_year - args.start_year + 1) // args.interval
 commit_counts = defaultdict(lambda: [0] * num_of_periods)
+all_commit_data = defaultdict(list)
 
-# Iterate through every repo in repo list in order to get all the commits
+# Count total commits for all repos
 for repository in repo_list:
+    print(repository)
     repo_path = os.path.join(args.repos_path, repository)
     repo = Repo(repo_path)
-
-    # Iterate through every commit
+    os.chdir(repo_path)
+    
+    # Collect all necessary commit data in one go
     for commit in repo.iter_commits():
-
         commit_year = commit.authored_datetime.year
-
-        # Handle commits in the specified range
         if args.start_year <= commit_year <= args.end_year:
-            day_index = commit.authored_datetime.weekday() # Get the index of the day the commit was made
-            # Calculate the column where the specific commit will be added in the CSV
-            interval_index = (commit_year - args.start_year) // args.interval
-
-            # Handle cases where commit year is outside the specified range
-            if interval_index < 0 or interval_index >= num_of_periods:
-                parser.error("Invalid arguments given")
-            
             commit_time = commit.authored_datetime
-            if commit_time.strftime('%z') == "+0000":
-                result = subprocess.run([os.path.join(shell_path, "check_timezone.sh"), commit.author.name,str(commit_year)])
-                if result.returncode == 0:
-                    continue
+            author_year = (commit.author.name, commit_year)
+            all_commit_data[author_year].append(commit_time)
 
-            if 0 <= interval_index < num_of_periods:
-                commit_counts[day_index][interval_index] += 1
+# Process each author's commits once
+for author_year, commit_times in all_commit_data.items():
+    commit_author, commit_year = author_year
+
+    # Check timezone once per author per year
+    result = subprocess.run(
+        [os.path.join(shell_path, "check_timezone.sh"), commit_author, str(commit_year)],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
+    )
+
+    # If result is 0, all commits are in UTC+0, skip processing
+    if result.returncode == 0:
+        continue
+
+    # Process commit times if they are not in UTC+0
+    for commit_time in commit_times:
+        hour_index = commit_time.hour
+        interval_index = (commit_year - args.start_year) // args.interval
+
+        # Ensure interval_index is within valid range
+        if 0 <= interval_index < num_of_periods:
+            commit_counts[hour_index][interval_index] += 1
 
 
 def write_counts(args, commit_counts, days_of_week):

@@ -36,6 +36,7 @@ num_of_periods = (args.end_year - args.start_year + 1) // args.interval
 commit_counts = defaultdict(lambda: [0] * num_of_periods)
 
 commit_timezones = {}
+all_commit_data = defaultdict(list)
 
 # Count total commits for all repos
 for repository in repo_list:
@@ -46,32 +47,34 @@ for repository in repo_list:
     # Iterate through every commit
     for commit in repo.iter_commits():
         commit_year = commit.authored_datetime.year
-
-       # Get the commits in the requested range
         if args.start_year <= commit_year <= args.end_year:
             commit_time = commit.authored_datetime
             author_year = (commit.author.name, commit_year)
+            all_commit_data[author_year].append(commit_time)
 
-            if author_year not in commit_timezones:
-                    result = subprocess.run(
-                        [os.path.join(shell_path, "check_timezone.sh"), commit.author.name, str(commit_year)],
-                    )
-                    
-                    commit_timezones[author_year] = (result.returncode == 0)
+       # Process each author's commits once
+    for author_year, commit_times in all_commit_data.items():
+        commit_author, commit_year = author_year
 
-            if commit_timezones[author_year]:
-                continue
+        # Check timezone once per author per year
+        result = subprocess.run(
+            [os.path.join(shell_path, "check_timezone.sh"), commit_author, str(commit_year)],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
 
-            hour_index = commit_time.hour
-            interval_index = (commit_year - args.start_year) // args.interval
+        # If result is 0, all commits are in UTC+0, skip processing
+        if result.returncode == 0:
+            continue    
 
-            # Handle cases where commit year is outside the specified range
-            if interval_index < 0 or interval_index >= num_of_periods:
-                parser.error("Invalid arguments given")
-
-            # Increase the commit count in the current hour and period by 1
-            if 0 <= interval_index < num_of_periods:
-                commit_counts[hour_index][interval_index] += 1
+        hour_index = commit_time.hour
+        interval_index = (commit_year - args.start_year) // args.interval
+        # Handle cases where commit year is outside the specified range
+        if interval_index < 0 or interval_index >= num_of_periods:
+            parser.error("Invalid arguments given")
+        # Increase the commit count in the current hour and period by 1
+        if 0 <= interval_index < num_of_periods:
+            commit_counts[hour_index][interval_index] += 1
 
 
 def write_counts(args, commit_counts):
