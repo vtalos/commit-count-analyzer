@@ -36,10 +36,10 @@ num_of_periods = (args.end_year - args.start_year + 1) // args.interval
 commit_counts = defaultdict(lambda: [0] * num_of_periods)
 
 commit_timezones = {}
-all_commit_data = defaultdict(list)
 
 # Count total commits for all repos
 for repository in repo_list:
+    all_commit_data = defaultdict(list)
     print(repository)
     repo_path = os.path.join(args.repos_path, repository)
     repo = Repo(repo_path)
