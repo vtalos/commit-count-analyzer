@@ -1,5 +1,4 @@
 from collections import defaultdict
-import subprocess
 from git import Repo
 import argparse
 import csv
@@ -26,7 +25,6 @@ if args.start_year > args.end_year:
 if args.interval <= 0:
     parser.error("Invalid argument: interval must be a positive integer")
 
-shell_path= os.getcwd()
 
 # Read the file and split the lines to get repository names
 with open(args.repos, 'r') as file:
@@ -36,7 +34,6 @@ with open(args.repos, 'r') as file:
 num_of_periods = (args.end_year - args.start_year + 1) // args.interval
 commit_counts = defaultdict(lambda: [0] * num_of_periods)
 
-commit_timezones = {}
 
 # Count total commits for all repos
 for repository in repo_list:
@@ -45,7 +42,6 @@ for repository in repo_list:
     print(repository)
     repo_path = os.path.join(args.repos_path, repository)
     repo = Repo(repo_path)
-    os.chdir(repo_path)
     # Iterate through every commit
     for commit in repo.iter_commits():
         contributor = commit.author.name
@@ -70,7 +66,6 @@ for repository in repo_list:
 
 def write_counts(args, commit_counts):
     # Calculate and write the commit counts in a CSV file
-    os.chdir(shell_path)
     with open('CommitCountsPerHour.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         hours = [time(hour=h) for h in range(24)]
@@ -81,7 +76,6 @@ def write_counts(args, commit_counts):
             writer.writerow([hour.strftime('%H:%M')] + [str(count) for count in commit_counts[hour_index]])
 
 def write_proportions(args, commit_counts):
-    os.chdir(shell_path)
     # Calculate and write the commit percentages in a CSV file
     with open('CommitPercentagesPerHour.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)

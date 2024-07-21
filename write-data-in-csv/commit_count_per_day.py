@@ -3,7 +3,6 @@ from git import Repo
 import argparse
 import csv
 import os
-import subprocess
 from datetime import time
 
 parser = argparse.ArgumentParser(description='Creates a CSV containing commit count per day of the week '
@@ -17,7 +16,6 @@ parser.add_argument('repos', type=str, help='Directory containing repository nam
 parser.add_argument('repos_path', type=str, help='The path for the file that contains the cloned repos')
 args = parser.parse_args()
 
-shell_path = os.getcwd()
 
 # Handle invalid arguments for start and end year
 if args.start_year > args.end_year:
@@ -38,46 +36,30 @@ days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturda
 num_of_periods = (args.end_year - args.start_year + 1) // args.interval
 commit_counts = defaultdict(lambda: [0] * num_of_periods)
 
-
-# Count total commits for all repos
 for repository in repo_list:
-    all_commit_data = defaultdict(list)
+    start=time.time()
+    non_utc0_commits = defaultdict(bool)
     print(repository)
     repo_path = os.path.join(args.repos_path, repository)
     repo = Repo(repo_path)
-    os.chdir(repo_path)
-    
-    # Collect all necessary commit data in one go
+
     for commit in repo.iter_commits():
-        commit_year = commit.authored_datetime.year
-        if args.start_year <= commit_year <= args.end_year:
-            commit_time = commit.authored_datetime
-            author_year = (commit.author.name, commit_year)
-            all_commit_data[author_year].append(commit_time)
-
-# Process each author's commits once
-for author_year, commit_times in all_commit_data.items():
-    commit_author, commit_year = author_year
-
-    # Check timezone once per author per year
-    result = subprocess.run(
-        [os.path.join(shell_path, "check_timezone.sh"), commit_author, str(commit_year)],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE
-    )
-
-    # If result is 0, all commits are in UTC+0, skip processing
-    if result.returncode == 0:
-        continue
-
-    # Process commit times if they are not in UTC+0
-    for commit_time in commit_times:
-        hour_index = commit_time.hour
-        interval_index = (commit_year - args.start_year) // args.interval
-
-        # Ensure interval_index is within valid range
-        if 0 <= interval_index < num_of_periods:
-            commit_counts[hour_index][interval_index] += 1
+        contributor = commit.author.name
+        year = commit.authored_datetime.year
+        if commit.authored_datetime.strftime('%z') != "+0000":
+            non_utc0_commits[(contributor, year)] = True
+        else:
+            if non_utc0_commits[(contributor, year)] is None:
+                non_utc0_commits[(contributor, year)] = False
+        for commit in repo.iter_commits():
+            contributor = commit.author.name
+            year = commit.authored_datetime.year
+            if non_utc0_commits[(contributor, year)] == True:
+                hour_index = commit.authored_datetime.hour
+                interval_index = (commit.authored_datetime.year - args.start_year) // args.interval
+                # Increase the commit count in the current hour and period by 1
+                if 0 <= interval_index < num_of_periods:
+                    commit_counts[hour_index][interval_index] += 1
 
 
 def write_counts(args, commit_counts, days_of_week):

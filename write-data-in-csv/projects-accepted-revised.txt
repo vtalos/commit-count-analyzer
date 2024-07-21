@@ -5,7 +5,6 @@ mycore-org/mycore
 iterate-ch/cyberduck
 apache/myfaces-tobago
 netxms/netxms
-devkitpro/newlib
 samba-team/samba
 gcc-mirror/gcc
 andrerh/wine
@@ -16,7 +15,6 @@ artifexsoftware/ghostpdl
 clusterlabs/pacemaker
 rtems/rtems
 picolibc/picolibc
-pfsense/freebsd-src
 cygwin/cygwin
 bminor/newlib
 genericmappingtools/gmt
@@ -64,7 +62,6 @@ cgal/cgal
 osgeo/gdal
 kde/kstars
 root-project/root
-opensuse/kernel-source
 rhinstaller/anaconda
 cctbx/cctbx_project
 reactos/reactos
@@ -98,7 +95,6 @@ dolibarr/dolibarr
 suse/kernel-source
 wikimedia/mediawiki
 wordpress/wordpress-develop
-markjaquith/wordpress
 wordpress/wordpress
 babelfish-for-postgresql/postgresql_modified_for_babelfish
 keyfactor/ejbca-ce
