@@ -54,7 +54,7 @@ for repository in repo_list:
         contributor = commit.author.name
         year = commit.authored_datetime.year
         if non_utc0_commits[(contributor, year)] == True:
-            day_index = commit.authored_datetime.weekday
+            day_index = commit.authored_datetime.weekday()
             interval_index = (commit.authored_datetime.year - args.start_year) // args.interval
             # Increase the commit count in the current hour and period by 1
             if 0 <= interval_index < num_of_periods:
