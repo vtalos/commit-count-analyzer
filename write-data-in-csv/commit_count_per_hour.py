@@ -4,7 +4,6 @@ import argparse
 import csv
 import os
 from datetime import time
-import time
 
 parser = argparse.ArgumentParser(description='Creates a CSV containing the commit count per hour'
                                              'for a given interval and repository')
@@ -37,7 +36,6 @@ commit_counts = defaultdict(lambda: [0] * num_of_periods)
 
 # Count total commits for all repos
 for repository in repo_list:
-    start=time.time()
     non_utc0_commits = defaultdict(bool)
     print(repository)
     repo_path = os.path.join(args.repos_path, repository)
@@ -60,8 +58,6 @@ for repository in repo_list:
             # Increase the commit count in the current hour and period by 1
             if 0 <= interval_index < num_of_periods:
                 commit_counts[hour_index][interval_index] += 1
-    print(time.time()-start)
-
 
 
 def write_counts(args, commit_counts):

@@ -37,7 +37,6 @@ num_of_periods = (args.end_year - args.start_year + 1) // args.interval
 commit_counts = defaultdict(lambda: [0] * num_of_periods)
 
 for repository in repo_list:
-    start=time.time()
     non_utc0_commits = defaultdict(bool)
     print(repository)
     repo_path = os.path.join(args.repos_path, repository)
