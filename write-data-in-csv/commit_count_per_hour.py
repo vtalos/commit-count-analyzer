@@ -79,6 +79,7 @@ for repository in repo_list:
 
 def write_counts(args, commit_counts):
     # Calculate and write the commit counts in a CSV file
+    os.chdir(shell_path)
     with open('CommitCountsPerHour.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         hours = [time(hour=h) for h in range(24)]
@@ -89,6 +90,7 @@ def write_counts(args, commit_counts):
             writer.writerow([hour.strftime('%H:%M')] + [str(count) for count in commit_counts[hour_index]])
 
 def write_proportions(args, commit_counts):
+    os.chdir(shell_path)
     # Calculate and write the commit percentages in a CSV file
     with open('CommitPercentagesPerHour.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
