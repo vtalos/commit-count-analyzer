@@ -11,13 +11,13 @@ def count_unique_values(list):
     return count_dict
 
 repos=[]
-with open("extended-version\scripts\distribution-of-languagaes\projects-accepted.txt") as file1:
+with open("projects-accepted-revised.txt") as file1:
     lines = file1.readlines()
     for line in lines:
         repos.append(line.strip())
       
 occurance=[]   
-with open ("extended-version\scripts\distribution-of-languagaes\ghs_results.csv") as file2:
+with open ("ghs_results.csv") as file2:
     reader = csv.reader(file2)
     next(reader)
     for row in reader:
