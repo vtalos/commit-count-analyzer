@@ -7,7 +7,7 @@ Usage:
 
 Arguments:
     <filename.txt>: txt file containing the average of inserted line per commits
-    for each year for all of the sample, in this case the results.txt file.
+    for each year for all of the sample, in this case the lines_per_commit.txt file.
 
 Returns:
     A plot showing the ratio of commits per line for the sample for each year.
