@@ -36,24 +36,20 @@ days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturda
 num_of_periods = (args.end_year - args.start_year + 1) // args.interval
 commit_counts = defaultdict(lambda: [0] * num_of_periods)
 
+# Count total commits for all repos
 for repository in repo_list:
     non_utc0_commits = defaultdict(bool)
     print(repository)
     repo_path = os.path.join(args.repos_path, repository)
     repo = Repo(repo_path)
 
+    # Iterate through every commit
     for commit in repo.iter_commits():
-        contributor = commit.author.name
-        year = commit.authored_datetime.year
+        contributor = commit.author.email
         if commit.authored_datetime.strftime('%z') != "+0000":
-            non_utc0_commits[(contributor, year)] = True
-        else:
-            if non_utc0_commits[(contributor, year)] is None:
-                non_utc0_commits[(contributor, year)] = False
-    for commit in repo.iter_commits():
-        contributor = commit.author.name
-        year = commit.authored_datetime.year
-        if non_utc0_commits[(contributor, year)] == True:
+            non_utc0_commits[contributor] = True
+
+        if non_utc0_commits[contributor] == True:
             day_index = commit.authored_datetime.weekday()
             interval_index = (commit.authored_datetime.year - args.start_year) // args.interval
             # Increase the commit count in the current hour and period by 1

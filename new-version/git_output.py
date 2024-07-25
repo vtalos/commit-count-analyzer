@@ -1,3 +1,18 @@
+"""
+This script analyzes commit counts and details for a list of repositories.
+It takes the start year, end year, repository list file, and repository path as command-line arguments.
+The script iterates through each repository, checks for non-UTC0 commits, and counts the number of inserted lines for each commit.
+The commit details are then saved to a file named 'git_log.txt'.
+
+Usage: python git_output.py start_year end_year repos repos_path
+
+Arguments:
+    start_year (int): The year commit counting starts.
+    end_year (int): The year commit counting stops.
+    repos (str): File containing repository names.
+    repos_path (str): Path to the directory containing cloned repos.
+"""
+
 from collections import defaultdict
 from git import Repo
 import argparse
@@ -5,13 +20,13 @@ import os
 import subprocess
 import re
 
+
 # Argument parsing
 parser = argparse.ArgumentParser()
 parser.add_argument('start_year', type=int, help='The year commit counting starts')
 parser.add_argument('end_year', type=int, help='The year commit counting stops')
 parser.add_argument('repos', type=str, help='File containing repository names')
 parser.add_argument('repos_path', type=str, help='Path to the directory containing cloned repos')
-
 args = parser.parse_args()
 
 # Validate arguments
