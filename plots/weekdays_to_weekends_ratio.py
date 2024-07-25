@@ -30,7 +30,6 @@ filename = sys.argv[1]
 # Reading data from the CSV file
 data=pd.read_csv(filename)
 data=data.iloc[:,1:]
-data=np.array(data)
 
 # Separating weekdays and weekends
 weekdays = data.T[:,0:5]  # First five columns are weekdays
