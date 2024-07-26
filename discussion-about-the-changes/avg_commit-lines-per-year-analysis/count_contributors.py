@@ -22,7 +22,7 @@ with open(args.repos, 'r') as file:
 # Calculate the number of periods
 num_of_periods = (args.end_year - args.start_year + 1) // args.interval
 
-contributors_per_year = defaultdict(lambda: [0] * num_of_periods)
+contributors_per_year = defaultdict(int)
 commit_counts = defaultdict(lambda: [0] * num_of_periods)
 
 
@@ -41,7 +41,8 @@ for repository in repo_list:
         if commit.authored_datetime.strftime('%z') != "+0000" and non_utc0_commits[contributor] == False:
             non_utc0_commits[contributor] = True
             year=commit.authored_datetime.year
-            contributors_per_year[year] += 1
+            if year <= args.end_year and year >= args.start_year:
+                contributors_per_year[year] += 1
 
 # Write the dictionary to a text file
 with open('contributors_per_year.txt', 'w') as file:

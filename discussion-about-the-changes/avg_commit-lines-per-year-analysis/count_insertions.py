@@ -4,8 +4,7 @@ from git import Repo
 import argparse
 import os
 import re
-parser = argparse.ArgumentParser(description='Creates a CSV containing the commit count per hour'
-                                             'for a given interval and repository')
+parser = argparse.ArgumentParser(description='Counts the average number of inserted lines per year')
 parser.add_argument('start_year', type=int, help='The year commit counting starts')
 parser.add_argument('end_year', type=int, help='The year commit counting stops')
 parser.add_argument('repos', type=str, help='Directory containing repository names')
@@ -36,17 +35,26 @@ for repository in repo_list:
             non_utc0_commits[contributor] = True
             
         if non_utc0_commits[contributor] == True:
-            result = repo.git.log("--stat")
+            result = repo.git.log("-1",commit, "--stat")
 
             # Use regex to find lines that match the desired pattern and extract insertions count
-            pattern = r'(\d+ file[s]? changed), (\d+) insertions\(\+\), (\d+) deletion\(-\)'
-            insertions_counts = re.findall(pattern, result)
+            # for the --stat sum-up line
+            pattern = r'(\d+ file[s]? changed), (\d+) insertions\(\+\)'
+            match_string = re.search(pattern, result)
 
+            # zero inserted lines
+            if match_string is None:
+                insertions_counts=0
             # Extract the insertions number from the matched patterns
-            insertions_numbers = [int(match[1]) for match in insertions_counts]
+            else:
+                insertions_counts = match_string.group(2)
+            
+            
+
             year = commit.authored_datetime.year
-            inserted_lines_per_year[year] += insertions_counts
-            commits_per_year[year] +=1
+            if year <= args.end_year and year >= args.start_year:
+                inserted_lines_per_year[year] += int(insertions_counts)
+                commits_per_year[year] += 1
 
 # Write the dictionary to a text file
 with open('inserted_lines_per_year.txt', 'w') as file:
