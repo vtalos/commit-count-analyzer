@@ -13,5 +13,5 @@ for year in {2004..2023}; do
         contributors_per_year_all_repos=$((contributors_per_year_all_repos + contributors_per_year)) 
     done <"$DATA_LOCATION/projects-accepted.txt"
     echo "$year: $contributors_per_year_all_repos"
-    echo "$year: $contributors_per_year_all_repos" >> "$DATA_LOCATION/results.txt" 
+    echo "$year: $contributors_per_year_all_repos" >> "$DATA_LOCATION/all_contributors_per_year.txt" 
 done
