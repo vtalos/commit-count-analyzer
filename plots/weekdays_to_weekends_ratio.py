@@ -28,34 +28,33 @@ import pandas as pd
 filename = sys.argv[1]
 
 # Reading data from the CSV file
-data=pd.read_csv(filename)
-data=data.iloc[:,1:]
+data = pd.read_csv(filename)
 
-# Separating weekdays and weekends
-weekdays = data.T[:,0:5]  # First five columns are weekdays
-weekends = data.T[:,5:]  # Last two columns are weekends
+# Filter out the weekdays and weekends
+weekdays = data.iloc[0:5, 1:].T
+weekends = data.iloc[5:, 1:].T
 
-# Calculating average number of commits for weekdays and weekends
-avg_n_of_commits_weekdays = np.sum(weekdays, axis=1)/5
-avg_n_of_commits_weekends = np.sum(weekends, axis=1)/2
+# Calculate the average number of commits for weekdays and weekends
+avg_n_of_commits_weekdays = np.mean(weekdays, axis=1)
+avg_n_of_commits_weekends = np.mean(weekends, axis=1)
+
+# Calculate the ratio of average weekday commits to average weekend commits
+ratio = avg_n_of_commits_weekdays / avg_n_of_commits_weekends
+
+# Extract the years from the column names
+years = data.columns[1:].astype(int)
 
 # Plotting
 fig, ax = plt.subplots()
 ax.set_xlabel('Year', fontsize=35)
 ax.set_ylabel('Ratio', fontsize=35)
-ax.set_xticks(range(2004,2024,2))
-ax.set_xticklabels(range(2004,2024,2), rotation=45)
-
-weekdays_line = plt.plot(range(2004, 2024), avg_n_of_commits_weekdays / avg_n_of_commits_weekends, 
-        linestyle='-', marker='o', color='blue', linewidth=5, markersize=15)
+ax.set_xticks(range(2004, 2024, 2))
+ax.set_xticklabels(range(2004, 2024, 2), rotation=45)
+ax.plot(years, ratio, linestyle='-', marker='o', color='blue', linewidth=5, markersize=15)
 
 # Set tick font size
 for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-        label.set_fontsize(35)
-
-# Set tick font size
-for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-        label.set_fontsize(35)
+    label.set_fontsize(35)
 
 plt.grid(True)
 plt.show()
