@@ -20,7 +20,7 @@ num_of_periods = args.end_year - args.start_year + 1
 
 inserted_lines_per_year = defaultdict(int)
 commits_per_year = defaultdict(int)
-
+counter=1
 with open('log.txt', 'w') as file:
     for repository in repo_list:
         non_utc0_commits = defaultdict(bool)
@@ -36,7 +36,8 @@ with open('log.txt', 'w') as file:
 
             if non_utc0_commits[contributor] == True:
                 result = repo.git.log("-1",commit, "--stat")
-                file.write(result)
-
+                print(result)
+                file.write(result + '\n')
+                counter += 1
 
     
