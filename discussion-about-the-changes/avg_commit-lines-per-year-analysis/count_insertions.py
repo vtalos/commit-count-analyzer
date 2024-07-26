@@ -16,10 +16,10 @@ with open(args.repos, 'r') as file:
     repo_list = [line.strip() for line in file.readlines()]
 
 # Calculate the number of periods
-num_of_periods = (args.end_year - args.start_year + 1) // args.interval
+num_of_periods = args.end_year - args.start_year + 1
 
-inserted_lines_per_year = defaultdict(lambda: [0] * num_of_periods)
-commits_per_year = defaultdict(lambda: [0] * num_of_periods)
+inserted_lines_per_year = defaultdict(int)
+commits_per_year = defaultdict(int)
 
 
 for repository in repo_list:

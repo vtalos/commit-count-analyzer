@@ -20,28 +20,33 @@ with open(args.repos, 'r') as file:
     repo_list = [line.strip() for line in file.readlines()]
 
 # Calculate the number of periods
-num_of_periods = (args.end_year - args.start_year + 1) // args.interval
+num_of_periods = args.end_year - args.start_year + 1
 
 contributors_per_year = defaultdict(int)
-commit_counts = defaultdict(lambda: [0] * num_of_periods)
 
 
 # Count total commits for all repos
 for repository in repo_list:
+
     non_utc0_commits = defaultdict(bool)
     print(repository)
     repo_path = os.path.join(args.repos_path, repository)
     repo = Repo(repo_path)
+    contributor_in_year = defaultdict(bool)
 
     # Iterate through every commit
     for commit in repo.iter_commits():
         contributor = commit.author.email
-
+        
         #change value just for the first occurence, to count contributors properly
-        if commit.authored_datetime.strftime('%z') != "+0000" and non_utc0_commits[contributor] == False:
+        if commit.authored_datetime.strftime('%z') != "+0000":
             non_utc0_commits[contributor] = True
-            year=commit.authored_datetime.year
-            if year <= args.end_year and year >= args.start_year:
+
+        if non_utc0_commits[contributor]:
+            year = commit.authored_datetime.year
+
+            if year <= args.end_year and year >= args.start_year and not contributor_in_year[year, contributor]:
+                contributor_in_year[year, contributor] = True
                 contributors_per_year[year] += 1
 
 # Write the dictionary to a text file
