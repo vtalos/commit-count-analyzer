@@ -41,7 +41,7 @@ print(lines_to_commits_ratio_per_year)
 fig, ax = plt.subplots()
 
 plt.plot(years, lines_to_commits_ratio_per_year, linestyle='-', marker='o', color='blue', linewidth=5, markersize=15)
-ax.set_xlabel('Year', fontsize = 18)
+ax.set_xlabel('Year', fontsize = 35)
 ax.set_ylabel('Lines to Commits Ratio', fontsize = 35)
 plt.xticks(range(2004, 2024, 2), rotation = 45)
 
