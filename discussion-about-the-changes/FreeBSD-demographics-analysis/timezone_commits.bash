@@ -29,7 +29,6 @@ REPO_LOCATION=/home/repos/github/freebsd/freebsd-src
 
 for year in ${arguements[@]}; do
 	> "$DATA_LOCATION/commits_by_timezone_$year.txt"
-	echo "$year" >> "$DATA_LOCATION/commits_by_timezone_$year.txt"
 	#initialize commits_by_timezone array
 	for timezone_offset in ${timezones[@]}; do
     		commits_by_timezone["$timezone_offset"]=0
