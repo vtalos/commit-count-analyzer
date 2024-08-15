@@ -28,22 +28,21 @@ DATA_LOCATION=$(pwd)
 REPO_LOCATION=/home/repos/github/freebsd/freebsd-src
 
 for year in ${arguements[@]}; do
+	> "$DATA_LOCATION/commits_by_timezone_$year.txt"
 	echo "$year" >> "$DATA_LOCATION/commits_by_timezone_$year.txt"
 	#initialize commits_by_timezone array
 	for timezone_offset in ${timezones[@]}; do
     		commits_by_timezone["$timezone_offset"]=0
 	done
 	#Loop through projects
-	while IFS= read -r name; do
     		cd "$REPO_LOCATION" || continue
     		# Loop through timezone offsets from -12 to +12
     		for timezone_offset in ${timezones[@]}; do
     		# Execute git log command with timezone offset
     		commits_count=$(git log --after="$((year-1))-12-31" --before="$((year+1))-01-01" | grep -- "$timezone_offset" | wc -l)
     		commits_by_timezone["$timezone_offset"]=$(( ${commits_by_timezone["$timezone_offset"]} + commits_count ))
-    		echo "$name: $timezone_offset: $commits_count"
+    		echo "$timezone_offset: $commits_count"
     		done 
-	done < "$REPO_LOCATION"
 	# write results to the  file
 	for timezone_offset in ${timezones[@]}; do
     		echo "$timezone_offset: ${commits_by_timezone["$timezone_offset"]}" >> "$DATA_LOCATION/commits_by_timezone_$year.txt"
