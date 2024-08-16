@@ -21,12 +21,10 @@ for commit in repo.iter_commits():
         non_utc0_commits[contributor] = True
     if non_utc0_commits[contributor] == True:
         year = commit.authored_datetime.year
-        if args.start_year <= year < args.end_year:
+        if args.start_year <= year <= args.end_year:
             timezone = commit.authored_datetime.strftime('%z')
-            commits_by_year_timezones[year][timezone] += 1
-for year, timezones in commits_by_year_timezones.items():
-        counts = list(timezones.values())
-        mean = statistics.mean(counts)
-        stddev = statistics.stdev(counts)
-        cv = (stddev / mean) * 100
-        print(f"Year: {year}, Coefficient of Variation: {cv:.2f}%")
+            if timezone != "+0000": #exclude UTC-0
+                commits_by_year_timezones[year][timezone] += 1
+for year, timezones in sorted(commits_by_year_timezones.items()):
+        print(year, max(timezones, key=timezones.get))
+                
