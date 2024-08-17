@@ -2,7 +2,7 @@
 Script to generate a grouped bar chart showing the frequency of commits for each block of hour within two specific time periods.
 
 Usage:
-    python plots_on_time.py <filename.csv> <period_name1> <period_name2>
+    python hourly_frequencies <filename.csv> <period_name1> <period_name2>
 
 Arguments:
     <filename.csv>: CSV file containing commit data.
@@ -18,7 +18,7 @@ Dependencies:
     - csv
 
 Example:
-    python plots_on_time.py CommitPercentagesPerHour.csv 2004 2023
+    python hourly_frequencies CommitPercentagesPerHour.csv 2004 2023
 """
 
 import csv
@@ -98,7 +98,7 @@ def main():
     Main function to execute the script.
     """
     if len(sys.argv) != 4:
-        print("Usage: python plots_on_time.py <filename.csv> <period_name1> <period_name2>")
+        print("Usage: python hourly_frequencies <filename.csv> <period_name1> <period_name2>")
         sys.exit(1)
 
     filename = sys.argv[1]
