@@ -82,10 +82,6 @@ plt.xticks(rotation=35)
 for label in (ax.get_xticklabels() + ax.get_yticklabels()):
         label.set_fontsize(35)
 
-# Set tick font size
-for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-        label.set_fontsize(35)
-
 # Display the trend line if exists
 if p_value < alpha:
     plt.plot(periods, data, marker='o', linestyle='-', color='red', label='Trend Line', linewidth=5, markersize=15)
