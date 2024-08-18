@@ -142,7 +142,7 @@ def plot_data(data_blocks, time_labels, periods):
     for label in (ax.get_xticklabels() + ax.get_yticklabels()):
         label.set_fontsize(35)
 
-    ax.legend(fontsize=20)
+    ax.legend(fontsize=25, framealpha=0.5)
 
     plt.show()
 
