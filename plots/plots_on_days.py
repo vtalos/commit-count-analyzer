@@ -20,7 +20,6 @@ Dependencies:
 Example:
     python plots_on_days.py commit_data.csv freq_for_weekends
 """
-
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
@@ -95,7 +94,7 @@ def freq_for_weekends():
         label.set_fontsize(35)
 
     # Format y-axis to show values in thousands
-    ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, pos: f'{int(x/1000)}K'))
+    ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, pos: f'{int(x/1000)}'))
 
 
 def total_commits_per_period():
@@ -108,7 +107,7 @@ def total_commits_per_period():
     fig, ax = plt.subplots()
     rects.append(ax.bar(x, sum_period, width))
 
-    ax.set_ylabel('Total Commits', fontsize=35)
+    ax.set_ylabel('Total Commits (Thousands)', fontsize=35)
     ax.set_xlabel('Period', fontsize=35)
     ax.set_xticks(x)
 
@@ -121,7 +120,7 @@ def total_commits_per_period():
         label.set_fontsize(35)
 
     # Format y-axis to show values in thousands
-    ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, pos: f'{int(x/1000)}K'))
+    ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, pos: f'{int(x/1000)}'))
 
 
 if plot == "freq_for_weekends":
