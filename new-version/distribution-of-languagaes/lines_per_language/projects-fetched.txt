@@ -1,0 +1,16 @@
+exist-db/exist
+apache/groovy
+ow2-proactive/scheduling
+mycore-org/mycore
+iterate-ch/cyberduck
+apache/myfaces-tobago
+netxms/netxms
+samba-team/samba
+gcc-mirror/gcc
+andrerh/wine
+blender/blender
+gnutls/gnutls
+mapserver/mapserver
+artifexsoftware/ghostpdl
+clusterlabs/pacemaker
+rtems/rtems
