@@ -44,7 +44,7 @@ freesurfer/freesurfer
 gnome/glib
 gnome/gnome-control-center
 openssl/openssl
-greenplum-db/gpdb
+greenplum-db/gpdb-archive
 kitware/cmake
 mackyle/sqlite
 schedmd/slurm

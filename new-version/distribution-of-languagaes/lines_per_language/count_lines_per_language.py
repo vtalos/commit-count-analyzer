@@ -14,13 +14,13 @@ Requirements:
 - Python 3.x
 - `cloc` command-line tool (must be installed and available in your system's PATH)
 
-Directory Structure:
+Necessary files:
 --------------------
-- `projects-accepted-revised.txt`: A text file containing a list of project paths relative 
+- `projects-accepted-.txt`: A text file containing a list of project paths relative 
   to the `REPO_LOCATION` directory. Each line should correspond to one project.
 
-- `REPO_LOCATION`: The base directory where the repositories are located.
-
+- 'fetch-projects.sh': downloads the repositories using the --single-branch option. Must be
+used before the above script.
 
 Usage:
 ------
@@ -48,6 +48,7 @@ def find_last_commit_of_2023(project):
     last_commit = None
     path = os.path.join(REPO_LOCATION, project.strip())
     try:
+        os.chdir(path)
         # Run git log to find the last commit's of 2023 SHA
         last_commit = subprocess.run(
             ["git", "log", "--before=2024-01-01", "--max-count=1", "--format=%H"],
@@ -57,23 +58,21 @@ def find_last_commit_of_2023(project):
         )
     except subprocess.CalledProcessError as e:
         print(f"Error running git log on {path}: {e}")
-    return last_commit
+    return last_commit.stdout.strip()
 
 def create_csv_file(project,hash):
-    path = os.path.join(REPO_LOCATION, project.strip())
     try:
-        # Change to the project's directory
-        os.chdir(path)
         # Checkout the specific commit using the provided hash
         subprocess.run(["git", "checkout", hash], check=True)
+        output_csv = os.path.join(REPO_LOCATION,f"{project.split('/')[1]}.csv")
+
         # Run cloc and save the output to a CSV file
         subprocess.run(
-            ["cloc", path, "--csv", f"--out={project.split('/')[1]}.csv"],
+                ["cloc", "." , "--csv", f"--out={output_csv}"],
             check=True  # This raises an error if cloc fails
         )
-        csv_files.append(f"{project.split('/')[1]}.csv")
-        print(f"CSV for {path} created successfully.")
-        return project.split('/')[1] + ".csv"
+        csv_files.append(output_csv)
+        return output_csv
     except subprocess.CalledProcessError as e:
         print(f"Error running cloc on {path}: {e}")
     return None
@@ -94,7 +93,7 @@ def calculate_lines_per_language(csv_files):
 REPO_LOCATION= os.getcwd()
 total_counts = defaultdict(lambda: {"files": 0, "blank": 0, "comment": 0, "code": 0})
 csv_files=[]
-with open('projects-accepted-revised.txt', 'r') as f:
+with open('projects-accepted.txt', 'r') as f:
         projects = f.readlines()
         for project in projects:
             project = project.strip()
